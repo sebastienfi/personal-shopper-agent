@@ -20,15 +20,36 @@ Two premises drive the whole design:
 
 ## Install
 
-```bash
-git clone https://github.com/sebastienfi/personal-shopper-agent.git
-cp -r personal-shopper-agent/.claude/skills/shopper-agent ~/.claude/skills/
-```
+Pick the row that matches where you use Claude.
 
-Or drop it in a single project at `<project>/.claude/skills/shopper-agent`.
+| Where | How |
+|---|---|
+| Claude Code | `/plugin marketplace add sebastienfi/personal-shopper-agent` then `/plugin install shopper-agent@sebastienfi` |
+| Cowork / Claude Desktop | Customize → Plugins → **Add marketplace** → `sebastienfi/personal-shopper-agent` → Install |
+| claude.ai (no plugins) | Download [`shopper-agent.zip`][latest] → Customize → Skills → **+** → Create skill → upload → toggle on |
+| Claude API | `POST /v1/skills` with the same `shopper-agent.zip` |
 
-Needs Claude Code with web search, web fetch, and Artifacts enabled. `curl` and (on macOS)
-`sips` are used for image acquisition.
+[latest]: https://github.com/sebastienfi/personal-shopper-agent/releases/latest
+
+### Before it will work
+
+The agent does live research and writes an interactive HTML report, so it needs:
+
+- **Web search and web fetch.** On in Claude Code by default; on claude.ai check
+  Settings → Capabilities.
+- **Code execution and file creation.** Required for skills to run at all on claude.ai, and
+  required here to write the report. Settings → Capabilities on Free/Pro/Max. Team plans
+  have it on by default; on Enterprise an Owner enables **Code execution and file creation**
+  and **Skills** under Organization settings → Skills.
+
+Without these the skill will still trigger and then quietly underperform, so it is worth
+confirming before the first run. Image acquisition also uses `curl` and, on macOS, `sips`.
+
+### Updating
+
+Claude Code and Cowork pull new versions from the marketplace - run
+`/plugin marketplace update sebastienfi` if you want it now rather than at next launch.
+Zip installs do not auto-update; re-download and re-upload.
 
 ## Use
 
@@ -165,13 +186,17 @@ keep one link.
 ## Layout
 
 ```
-.claude/skills/shopper-agent/
-├── SKILL.md                      # phase-gated behavioural spec, source of truth
-└── references/
-    ├── domain-primer.md          # how to become competent in a category first
-    ├── source-verification.md    # source tiers, conflict resolution, margins
-    ├── image-sourcing.md         # lead images: acquisition, CSP, verification
-    └── report-template.md        # HTML report anatomy and interaction patterns
+.claude-plugin/marketplace.json           # catalog, one entry
+plugins/shopper-agent/
+├── .claude-plugin/plugin.json            # name, version, author
+└── skills/shopper-agent/                 # the skill itself
+    ├── SKILL.md                          # phase-gated behavioural spec, source of truth
+    └── references/
+        ├── domain-primer.md              # how to become competent in a category first
+        ├── source-verification.md        # source tiers, conflict resolution, margins
+        ├── image-sourcing.md             # lead images: acquisition, CSP, verification
+        └── report-template.md            # HTML report anatomy and interaction patterns
+.claude/skills/shopper-agent -> ../../plugins/shopper-agent/skills/shopper-agent
 ```
 
 `SKILL.md` holds the authoritative phase sequence and stays scannable. The reference files
@@ -184,11 +209,21 @@ scrambled order), a retailer advertising removable blades that the manufacturer'
 name confirmed were `NonDetachable`, the same product listed at both 2,500 and 25,000 RPM.
 Each would have produced a wrong purchase.
 
-## Adapting it
+## Working on it
+
+The skill lives at `plugins/shopper-agent/skills/shopper-agent/`.
+`.claude/skills/shopper-agent` is a symlink to it, so cloning this repo and running Claude
+Code inside it gives you the working copy live, with no install step. Edit the real files,
+not the link. (On Windows the symlink only materialises with `core.symlinks=true` and either
+Developer Mode or an elevated shell; otherwise you get a text file holding the path.)
 
 `SKILL.md` is the source of truth for behaviour - change it there rather than duplicating
 rules elsewhere. Detailed procedure belongs in `references/`. Keep the report single-file and
 dependency-free so it renders standalone.
+
+Tagging `v*` builds `shopper-agent.zip` (skill folder at the zip root) and attaches it to the
+GitHub release. Bump the version in both `.claude-plugin/marketplace.json` and
+`plugins/shopper-agent/.claude-plugin/plugin.json` - CI fails the build if they drift.
 
 ## License
 

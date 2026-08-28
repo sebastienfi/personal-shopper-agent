@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Manifests are valid JSON
+        run: |
+          set -euo pipefail
+          for f in .claude-plugin/marketplace.json plugins/shopper-agent/.claude-plugin/plugin.json; do
+            python3 -m json.tool "$f" > /dev/null && echo "ok  $f"
+          done
+
+      - name: Marketplace source path resolves
+        run: |
+          set -euo pipefail
+          src=$(python3 -c "import json;print(json.load(open('.claude-plugin/marketplace.json'))['plugins'][0]['source'])")
+          test -f "$src/.claude-plugin/plugin.json" || { echo "::error::$src has no plugin.json"; exit 1; }
+          test -f "$src/skills/shopper-agent/SKILL.md" || { echo "::error::$src has no skill"; exit 1; }
+          echo "ok  $src"
+
+      - name: Versions agree
+        run: |
+          set -euo pipefail
+          mv=$(python3 -c "import json;print(json.load(open('.claude-plugin/marketplace.json'))['plugins'][0]['version'])")
+          pv=$(python3 -c "import json;print(json.load(open('plugins/shopper-agent/.claude-plugin/plugin.json'))['version'])")
+          [ "$mv" = "$pv" ] || { echo "::error::marketplace $mv != plugin $pv"; exit 1; }
+          echo "ok  $pv"
+
+      - name: Dev symlink points at the real skill
+        run: |
+          set -euo pipefail
+          link=.claude/skills/shopper-agent
+          test -L "$link" || { echo "::error::$link is not a symlink"; exit 1; }
+          test -f "$link/SKILL.md" || { echo "::error::$link is broken"; exit 1; }
+          echo "ok  $link -> $(readlink "$link")"

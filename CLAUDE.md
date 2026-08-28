@@ -2,11 +2,13 @@
 
 ## Status
 
-Greenfield. No source code, no build tooling. The only content is the agent prompt at
-`.claude/skills/shopper-agent/`.
+No application source code. The content is the agent prompt at
+`plugins/shopper-agent/skills/shopper-agent/`, packaged as a Claude Code plugin and
+distributed through the marketplace manifest at `.claude-plugin/marketplace.json`.
 
-Nothing below describes existing code. Update this file once a stack is chosen and
-the first commits land (build/test/lint commands, module layout, conventions).
+Tooling is CI only: `.github/workflows/ci.yml` validates the manifests, and
+`release.yml` builds `shopper-agent.zip` on a `v*` tag. There is no build or test
+command for the skill itself.
 
 ## What this project is
 
@@ -19,7 +21,7 @@ HTML shopping report with product photos.
 ## Where the behaviour lives
 
 ```
-.claude/skills/shopper-agent/
+plugins/shopper-agent/skills/shopper-agent/
 ├── SKILL.md                          # phase-gated behavioural spec, source of truth
 └── references/
     ├── domain-primer.md              # how to become competent in a category first
@@ -27,6 +29,10 @@ HTML shopping report with product photos.
     ├── image-sourcing.md             # lead images: acquisition, CSP, verification
     └── report-template.md            # HTML report anatomy and interaction patterns
 ```
+
+**Edit those files, not `.claude/skills/shopper-agent`** - that is a symlink to the
+directory above, kept so the skill is live when working inside this repo. It is the
+development path, never the distribution path.
 
 `SKILL.md` is invoked via `/shopper-agent` and holds the authoritative 7-phase
 sequence. The reference files hold the detailed playbooks and are read on demand

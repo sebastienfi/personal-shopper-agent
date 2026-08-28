@@ -1,0 +1,63 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to attach the asset to (e.g. v1.0.0)"
+        required: true
+
+permissions:
+  contents: write
+
+env:
+  SKILL_DIR: plugins/shopper-agent/skills/shopper-agent
+  SKILL_NAME: shopper-agent
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate skill
+        run: |
+          set -euo pipefail
+          test -f "$SKILL_DIR/SKILL.md" || { echo "::error::no SKILL.md at $SKILL_DIR"; exit 1; }
+
+          # Folder name must match the frontmatter name, or the skill won't load.
+          fm_name=$(awk '/^---$/{n++; next} n==1 && /^name:/{sub(/^name:[[:space:]]*/,""); print; exit}' "$SKILL_DIR/SKILL.md")
+          if [ "$fm_name" != "$SKILL_NAME" ]; then
+            echo "::error::SKILL.md name '$fm_name' != folder name '$SKILL_NAME'"; exit 1
+          fi
+
+          # description is the trigger text and is capped at 1024 chars.
+          desc=$(awk '/^---$/{n++; next} n==1 && /^description:/{sub(/^description:[[:space:]]*/,""); print; exit}' "$SKILL_DIR/SKILL.md")
+          len=${#desc}
+          if [ "$len" -eq 0 ]; then echo "::error::empty description"; exit 1; fi
+          if [ "$len" -gt 1024 ]; then echo "::error::description is $len chars, max 1024"; exit 1; fi
+          echo "name=$fm_name description=${len} chars"
+
+      - name: Build skill zip
+        run: |
+          set -euo pipefail
+          staging=$(mktemp -d)
+          # The zip root must be the skill folder itself - not a wrapper directory,
+          # and not the loose files.
+          cp -R "$SKILL_DIR" "$staging/$SKILL_NAME"
+          (cd "$staging" && zip -r -q "$GITHUB_WORKSPACE/$SKILL_NAME.zip" "$SKILL_NAME" -x '*.DS_Store')
+          unzip -l "$SKILL_NAME.zip"
+
+      - name: Attach to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
+        run: |
+          set -euo pipefail
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --title "$TAG" --generate-notes
+          fi
+          gh release upload "$TAG" "$SKILL_NAME.zip" --clobber

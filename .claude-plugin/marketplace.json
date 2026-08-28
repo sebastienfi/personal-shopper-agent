@@ -1,0 +1,32 @@
+{
+  "name": "sebastienfi",
+  "owner": {
+    "name": "Sébastien Fichot",
+    "url": "https://github.com/sebastienfi"
+  },
+  "description": "Skills and agents by sebastienfi.",
+  "version": "1.0.0",
+  "plugins": [
+    {
+      "name": "shopper-agent",
+      "source": "./plugins/shopper-agent",
+      "version": "1.0.0",
+      "description": "Autonomous research-and-shopping agent. Studies the product category first, interviews you with informed questions, verifies every spec against primary sources, and renders survivors as an interactive HTML shopping report.",
+      "author": {
+        "name": "Sébastien Fichot",
+        "url": "https://github.com/sebastienfi"
+      },
+      "homepage": "https://github.com/sebastienfi/personal-shopper-agent",
+      "repository": "https://github.com/sebastienfi/personal-shopper-agent",
+      "license": "CC0-1.0",
+      "category": "productivity",
+      "keywords": [
+        "shopping",
+        "research",
+        "product-comparison",
+        "buying-guide",
+        "html-report"
+      ]
+    }
+  ]
+}
