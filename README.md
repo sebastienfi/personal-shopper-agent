@@ -31,6 +31,13 @@ Pick the row that matches where you use Claude.
 
 [latest]: https://github.com/sebastienfi/personal-shopper-agent/releases/latest
 
+The `owner/repo` shorthand resolves over SSH where a GitHub key is configured. Without one,
+pass the full HTTPS URL instead:
+
+```
+/plugin marketplace add https://github.com/sebastienfi/personal-shopper-agent.git
+```
+
 ### Before it will work
 
 The agent does live research and writes an interactive HTML report, so it needs:
