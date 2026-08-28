@@ -218,11 +218,33 @@ Each would have produced a wrong purchase.
 
 ## Working on it
 
-The skill lives at `plugins/shopper-agent/skills/shopper-agent/`.
-`.claude/skills/shopper-agent` is a symlink to it, so cloning this repo and running Claude
-Code inside it gives you the working copy live, with no install step. Edit the real files,
-not the link. (On Windows the symlink only materialises with `core.symlinks=true` and either
-Developer Mode or an elevated shell; otherwise you get a text file holding the path.)
+The skill lives at `plugins/shopper-agent/skills/shopper-agent/`. Load that directory
+directly rather than installing, and the working tree is the only copy on your machine:
+
+```bash
+alias cc='claude --plugin-dir /path/to/personal-shopper-agent/plugins/shopper-agent'
+```
+
+`cc` in any directory gets the live skill, and `/reload-plugins` picks up edits without a
+restart.
+
+**This works even with the plugin installed at user scope.** Installing copies a snapshot
+into `~/.claude/plugins/cache/`, and a plain `claude` reads that snapshot, so your edits do
+nothing. `--plugin-dir` shadows it: same plugin name, so the two dedupe to one entry and the
+working tree wins. You get the released copy for everyday use and the live copy whenever you
+launch with the flag.
+
+What does *not* work is a `.claude/skills/shopper-agent` symlink in the repo. That loads as a
+project skill named `shopper-agent`, while the installed plugin loads as
+`shopper-agent:shopper-agent` - different names, so they never dedupe and you genuinely run
+two copies. This repo deliberately has no such symlink.
+
+Before tagging:
+
+```bash
+claude plugin validate . --strict
+claude plugin validate ./plugins/shopper-agent --strict
+```
 
 `SKILL.md` is the source of truth for behaviour - change it there rather than duplicating
 rules elsewhere. Detailed procedure belongs in `references/`. Keep the report single-file and

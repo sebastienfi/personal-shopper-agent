@@ -30,9 +30,19 @@ plugins/shopper-agent/skills/shopper-agent/
     └── report-template.md            # HTML report anatomy and interaction patterns
 ```
 
-**Edit those files, not `.claude/skills/shopper-agent`** - that is a symlink to the
-directory above, kept so the skill is live when working inside this repo. It is the
-development path, never the distribution path.
+There is deliberately **no `.claude/skills/` copy or symlink in this repo**. It would load
+as a project skill named `shopper-agent` while an installed plugin loads as
+`shopper-agent:shopper-agent`; different names, so they never dedupe and both run.
+
+To exercise the skill live, launch with `--plugin-dir`:
+
+```
+claude --plugin-dir <repo>/plugins/shopper-agent
+```
+
+That shadows any installed copy of the same plugin (verified: with both present, the
+working tree wins and only one entry loads), so a plain `claude` still gets the released
+snapshot from `~/.claude/plugins/cache/`.
 
 `SKILL.md` is invoked via `/shopper-agent` and holds the authoritative 7-phase
 sequence. The reference files hold the detailed playbooks and are read on demand

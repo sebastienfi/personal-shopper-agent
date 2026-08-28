@@ -34,10 +34,16 @@ jobs:
           [ "$mv" = "$pv" ] || { echo "::error::marketplace $mv != plugin $pv"; exit 1; }
           echo "ok  $pv"
 
-      - name: Dev symlink points at the real skill
+      # The checks above are dependency-free and catch the structural breakage.
+      # This one is the CLI's own validator, which additionally rejects
+      # unrecognized manifest fields that the runtime would silently tolerate.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Claude Code manifest validation (strict)
         run: |
           set -euo pipefail
-          link=.claude/skills/shopper-agent
-          test -L "$link" || { echo "::error::$link is not a symlink"; exit 1; }
-          test -f "$link/SKILL.md" || { echo "::error::$link is broken"; exit 1; }
-          echo "ok  $link -> $(readlink "$link")"
+          npm install -g @anthropic-ai/claude-code >/dev/null 2>&1
+          claude plugin validate . --strict
+          claude plugin validate ./plugins/shopper-agent --strict
