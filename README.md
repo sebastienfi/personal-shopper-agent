@@ -219,7 +219,7 @@ Each would have produced a wrong purchase.
 ## Working on it
 
 The skill lives at `plugins/shopper-agent/skills/shopper-agent/`. Load that directory
-directly rather than installing, and the working tree is the only copy on your machine:
+directly so your edits take effect immediately:
 
 ```bash
 alias cc='claude --plugin-dir /path/to/personal-shopper-agent/plugins/shopper-agent'
