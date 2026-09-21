@@ -20,6 +20,8 @@ Spend 3 to 5 searches on the **category**, not on products. Useful query shapes:
 
 Read buying guides and owner complaints, not product listings. You are building a model of the category, not a shortlist.
 
+One or two long-term owner videos ("after 6 months", "1 year later") are worth the same as several articles for failure modes and usage guidance. Captions and comments only; see `video-evidence.md`.
+
 ## Required outputs
 
 ### 1. Form factors and who each suits

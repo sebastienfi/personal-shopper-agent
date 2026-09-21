@@ -9,13 +9,15 @@ Rank every figure you record. Store the tier alongside the value.
 | Tier | Source | Trust |
 |---|---|---|
 | 1 | Manufacturer spec sheet, manual, or technical PDF | Authoritative |
-| 2 | Manufacturer marketing page | Good, but marketing rounds figures |
-| 3 | Measured independent review | Good, and often the only source for real-world figures |
+| 2 | Manufacturer marketing page, or the manufacturer's own video channel | Good, but marketing rounds figures |
+| 3 | Measured independent review, written or video | Good, and often the only source for real-world figures |
 | 4 | Retailer spec field | **Unreliable. Never let it decide alone.** |
-| 5 | Retailer marketing copy | Weak |
+| 5 | Retailer marketing copy, or a video reviewer talking without measuring | Weak |
 | 6 | Search result snippet | Not a source. A lead only. |
 
 **Gating rule.** A hard constraint may never be decided by tier 4 or below on its own. Promote it to tier 1-3 or mark the spec `UNKNOWN`.
+
+**Video.** A video earns tier 3 only where the reviewer states a measurement they took, and the number is cross-checked, because auto-captions garble figures. Sponsored, gifted, and affiliate videos are demoted and flagged. Video comments are owner reports: a lead and a failure-mode signal, never a gating value. Procedure: `video-evidence.md`.
 
 ## Conflict resolution protocol
 
@@ -29,7 +31,7 @@ When two sources disagree on a gating spec:
 
 ## Documented failure catalogue
 
-Real errors from one session. Each would have produced a wrong purchase.
+Real errors from live sessions. Each would have produced a wrong purchase.
 
 **Transposed axes.** A blender listed as `H 26.5 / W 34.6 / D 17.6 cm`. A blender cannot be wider than it is tall. Real height was 47.7 cm, a 21 cm error, and the listing was carton dimensions in scrambled order. Caught by plausibility, not by a better source.
 
@@ -46,6 +48,10 @@ Real errors from one session. Each would have produced a wrong purchase.
 **Order-of-magnitude typo.** The same blender listed at both "2500 RPM" and "25000 RPM".
 
 **A page that is not what its URL claims.** A retailer "reviews" URL rendered a customer-support contact form. Zero reviews were extractable; the correct conclusion was `UNKNOWN`, not "no reviews exist".
+
+**Auto-captions garbling the words that matter.** A video review captioned the brand "Aerogogo" as "arog goo" and "motor" as "mortar". Numbers and units fail the same way. A figure heard only in auto-captions is a lead until a second source agrees.
+
+**An edited video understating a duration.** A reviewer pressed the inflate button and was describing the finished couch twelve seconds of runtime later, while quoting the maker's "within 4 minutes". The wait was cut. A duration read off video timestamps is a lower bound.
 
 ## Plausibility checks
 
@@ -87,6 +93,8 @@ Rules:
 - **Absence of reviews is `UNKNOWN`, never negative.** And `UNKNOWN` excludes.
 - A brand with mixed, product-dependent quality does not satisfy a "good reputation" limb. Say that plainly.
 - Watch for review counts pooled across variants or colours.
+- A video review in which the reviewer states a measurement they took counts as a measured review. **A manufacturer's own video is not a review**, whatever its title says.
+- Video view and like counts are not a rating. Zero extracted comments is `UNKNOWN`, not an absence of complaints.
 - A candidate excluded solely on unverifiable reviews belongs in the near-miss panel. The user may reasonably accept that risk, but only if they can see the option.
 
 ## Stock, price, and freshness

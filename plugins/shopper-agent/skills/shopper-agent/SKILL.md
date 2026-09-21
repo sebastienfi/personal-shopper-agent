@@ -71,7 +71,7 @@ Produce and store a `domain_primer` covering:
 
 Then **report the primer to the user in brief**. It is the expertise they lack and the reason your questions are worth answering.
 
-See `references/domain-primer.md` for the research recipe and worked example.
+See `references/domain-primer.md` for the research recipe and worked example. Long-term owner videos are a prime source for items 7 and 8; see `references/video-evidence.md`.
 
 ## 5. PHASE 2 - REQUIREMENTS INTERVIEW
 
@@ -123,6 +123,8 @@ If `OVER_DETERMINED`, **stop and report before spending the research budget.** N
 
 **A failed fetch never becomes an assumed value.** It becomes an entry in `unverified`.
 
+**Video pass.** For each finalist, and each near-miss whose binding constraint is still `UNKNOWN`, run a text-only YouTube pass: captions, description, comments, metadata. Video carries what spec pages omit - real setup time, noise, fit, washability, packed size, owner complaints. See `references/video-evidence.md`.
+
 **Lead image.** Acquire one per candidate. See `references/image-sourcing.md`. Images are also *evidence*: acquire them before the audit, because they frequently confirm or refute a claimed physical feature.
 
 **Research budget and stopping rule.** Track rounds. After 3 consecutive rounds yielding no new PASS candidate, stop searching and deliver what you have plus the binding-constraint analysis. Exhaustive search is not the deliverable; a decision is.
@@ -145,6 +147,8 @@ Score every candidate against every hard constraint and the budget. Record verdi
 > manufacturer spec sheet or manual > manufacturer marketing page > measured independent review > retailer spec field > marketing copy > search snippet
 
 Retailer spec fields are the single largest source of error. Never let one decide a gating constraint alone.
+
+Video figures follow the same ladder: the manufacturer's own channel is a marketing page, an independent reviewer's stated measurement is a measured review, unmeasured talk is marketing copy, and comments never gate. Cite each with a timestamped link. See `references/video-evidence.md`.
 
 **Sanity checks.** Run cross-checks on every gating figure before trusting it: sum of parts against the whole, aspect ratios, volume against dimensions, performance against price. An implausible figure usually means transposed axes or a carton dimension, not a remarkable product.
 

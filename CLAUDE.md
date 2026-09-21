@@ -26,6 +26,7 @@ plugins/shopper-agent/skills/shopper-agent/
 └── references/
     ├── domain-primer.md              # how to become competent in a category first
     ├── source-verification.md        # source tiers, conflict resolution, margins
+    ├── video-evidence.md             # YouTube as a source: captions, comments, tiering
     ├── image-sourcing.md             # lead images: acquisition, CSP, verification
     └── report-template.md            # HTML report anatomy and interaction patterns
 ```

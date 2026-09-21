@@ -46,6 +46,12 @@ One per survivor. Each needs:
 
 Order cards by a stated ranking rationale, not by price alone.
 
+**Citing a video-sourced figure.** Link to the second and state who said it, how, and the tier, so the user can hear it themselves:
+
+> Inflation: about 90 s - [maker's video, 0:08](https://www.youtube.com/watch?v=ID&t=8s), spoken claim, tier 2, not independently timed
+
+Mark sponsored, gifted, or affiliate sources on the citation itself. Link out only; an embedded player is an external asset and will not render.
+
 ### 5. Near-miss / override panel
 Visually distinct from verified cards so it cannot be mistaken for a recommendation. For each entry: what it would have won on, the **exact unmet constraint**, and any secondary catch.
 
@@ -66,6 +72,8 @@ Three or four practical notes from the domain primer. This is the shopper expert
 
 ### 9. Confidence disclosure
 An explicit list of what could not be verified, what was tried, and what the user should check themselves. Name the specific figure and its source tier. Example: a height sourced only from a retailer field with transposed axes, flagged medium-confidence with a recommendation to measure on arrival.
+
+Name every **video-only figure** here: a value whose sole source is a video, with its method (spoken claim, stated measurement, or caption-timestamp lower bound) and any sponsorship. A duration taken from video timestamps is disclosed as a lower bound, since edits understate it.
 
 ### 10. Footer
 Price timestamp with a drift caveat, source policy note, image attribution, and any category-wide exclusion (for example, all units of an incompatible mains voltage).

@@ -124,6 +124,10 @@ agent descends: manufacturer spec page or manual → `curl` with a browser user-
 manufacturer DAM/CDN → price aggregators → spec-sheet PDF → alternate-locale page for the
 same SKU.
 
+Finalists whose gating specs stay `UNKNOWN` get a text-only YouTube pass - captions,
+description, comments, metadata - for what spec pages omit: real setup time, noise, fit,
+owner complaints. Every figure is tiered and cited to the second.
+
 A failed fetch never becomes an assumed value. It becomes an entry in `unverified`. And
 searching is budgeted: after three rounds with no new passing candidate, the agent delivers
 what it has plus the binding-constraint analysis. A decision is the deliverable, not an
@@ -201,9 +205,9 @@ plugins/shopper-agent/
     └── references/
         ├── domain-primer.md              # how to become competent in a category first
         ├── source-verification.md        # source tiers, conflict resolution, margins
+        ├── video-evidence.md             # YouTube as a source: captions, comments, tiering
         ├── image-sourcing.md             # lead images: acquisition, CSP, verification
         └── report-template.md            # HTML report anatomy and interaction patterns
-.claude/skills/shopper-agent -> ../../plugins/shopper-agent/skills/shopper-agent
 ```
 
 `SKILL.md` holds the authoritative phase sequence and stays scannable. The reference files
