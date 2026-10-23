@@ -43,7 +43,7 @@ Verdict rules:
 
 ## Budget
 
-One lineage per candidate, two or three fetches each, manufacturer pages first. Web search quotas can be shared across parallel subagents in one turn (a session hit a 200-search ceiling with five agents), so give each lineage agent an explicit search cap.
+One lineage per candidate, two or three fetches each, manufacturer pages first. Web search quotas can be shared across parallel subagents in one turn (a session hit a 200-search ceiling with five agents), so give each lineage agent an explicit search cap, computed as in `research-fanout.md`.
 
 ## Report
 

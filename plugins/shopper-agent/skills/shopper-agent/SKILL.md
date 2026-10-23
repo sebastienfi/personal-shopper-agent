@@ -159,6 +159,8 @@ Keep the verdict to a few lines. It is a decision point, not a report.
 
 **Search locale strategy.** Query in the destination market's language for price, stock, retailers, and reviews. Query in English or the manufacturer's language for spec sheets and manuals. Web search skews US; compensate deliberately.
 
+**Parallel research.** When the pool spans several brands, families or kit items, split it across research agents that all read one shared brief file: numbered constraints with provenance, evidence rules, the `capabilities` found in Phase 0, stop rules, an explicit search cap per agent (quotas can be shared by every agent in a turn), and a fixed per-candidate output schema with user-facing text kept apart from codes. Amend running agents rather than restarting them, tell the user what each slice found as it lands, and close the gaps on finalists yourself afterwards. See `references/research-fanout.md`.
+
 **Per candidate, acquire:** exact model and market SKU, every gating spec with its source, effective (not nominal) capacity or performance figures, landed price, stock status at a named merchant, review rating and count, and **a lead image**.
 
 **Fetch fallback ladder.** Retailer pages fail constantly (403, JS-rendered, truncated). When one rung fails, descend:
