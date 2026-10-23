@@ -78,6 +78,7 @@ Maintain across turns:
 - `verified_solutions`: candidates whose every hard constraint is PASS
 - `near_misses`: candidates failing exactly one or two constraints, with the binding one named
 - `lineage`: per finalist and near-miss, the successor, step-up and cheaper siblings checked at the same manufacturer, their deltas on the gating specs, price delta, and verdict
+- `accepted_risks`: risks no source can settle that the user knowingly accepts, with what is known about each
 - `open_questions`: comparative or explanatory questions the user asked, to be answered in the report
 - `unverified`: specs that could not be confirmed, and what was tried
 - `research_budget`: rounds spent, rounds without a new PASS candidate
@@ -188,7 +189,7 @@ Score every candidate against every hard constraint and the budget. Record verdi
 **Verdicts:**
 
 - `PASS` - satisfied, with margin beyond measurement error
-- `PASS_MARGINAL` - satisfied, but the margin is inside measurement error or under ~5% of the threshold. Report the margin number and tell the user to verify physically.
+- `PASS_MARGINAL` - satisfied, but the margin is inside measurement error or under ~5% of the threshold, or the deciding figure is borrowed from another unit. Report the margin number and tell the user to verify physically.
 - `FAIL` - violated
 - `UNKNOWN` - not confirmable from an acceptable source
 
@@ -205,6 +206,8 @@ Video figures follow the same ladder: the manufacturer's own channel is a market
 **Sanity checks.** Run cross-checks on every gating figure before trusting it: sum of parts against the whole, aspect ratios, volume against dimensions, performance against price. An implausible figure usually means transposed axes or a carton dimension, not a remarkable product.
 
 **Effective over nominal.** Gate on the effective figure from the primer's trap list, never the advertised one.
+
+**Evidence that is not about this exact unit.** A figure borrowed from a sibling model, shared chip or category default supports `PASS_MARGINAL` at most. A measurement without its conditions (distance for noise, settings for fps) cannot decide a threshold. A price that looks like a site error is `UNKNOWN` until a cart or second merchant confirms it. A conversion you invented is a judgement call, not a gate. A risk no source can settle, which the user accepts, is shown as `accepted_risk`, neither passed nor hidden. Details and observed cases: `references/source-verification.md`.
 
 **Reviews and reputation.** Require model-level rating plus count from a named source. Below a usable count, fall back to brand-level evidence and say so. Absence of reviews is `UNKNOWN`, not negative - and `UNKNOWN` still excludes. Honour cross-market reputation when the user permits it.
 

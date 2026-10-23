@@ -53,6 +53,42 @@ Real errors from live sessions. Each would have produced a wrong purchase.
 
 **An edited video understating a duration.** A reviewer pressed the inflate button and was describing the finished couch twelve seconds of runtime later, while quoting the maker's "within 4 minutes". The wait was cut. A duration read off video timestamps is a lower bound.
 
+## Evidence that is not about this exact unit
+
+The tier ladder ranks *who* said a figure. These rules cover figures that are about something close to the candidate, or measured in a way that cannot be compared. Each one decided a recommendation in a live session.
+
+**Borrowed figures.** A value measured on a sibling model, a shared chip, another variant, a product-family manual, or a "typical" default for the category is `borrowed`. Record what it was borrowed from.
+
+- A borrowed figure can at best support `PASS_MARGINAL`, never `PASS`.
+- In any interactive tool, use the conservative end of what it supports, not the convenient one.
+- Disclose it on the card and in the confidence disclosure.
+
+Observed: a mini PC's gaming figure came from a more powerful sibling, and the text said to expect 45-55 fps while the report's tool used 55 against a 45 threshold. One chip-level benchmark was copied to six different machines. A headset transmit power of 5.6 dBm, from a single data point, was used as the default for fifteen models that did not publish one.
+
+**Figures without their conditions.** A measurement is only comparable with the conditions it was taken in: noise with its distance and load, fps with its game, settings and resolution, battery life with its volume and codec, range with its obstacles. When the conditions are missing, the figure cannot decide a threshold: treat it as `UNKNOWN`, or `PASS_MARGINAL` at best when it passes by a wide margin.
+
+Normalise where the source allows it. Noise shown as dB above the room's background, with the distance stated, compared reviewers that measured differently.
+
+**Prices that look like errors.** A price far below the same product at other merchants, or the same price for every variant of a range (64 GB and 128 GB both at 1,999.99 EUR, where 128 GB sells for 3,299.99 EUR elsewhere), is a suspected site error. It is `UNKNOWN` until confirmed in a cart or at a second merchant. Never pass a budget constraint on it, and never on a margin of a few cents.
+
+**Conversions you invented.** A conversion factor you set yourself ("10 m advertised is about 5 m in real use") is a `derived` assumption, not a fact. State it as a judgement call with its reasoning, keep it consistent with your own calculations elsewhere in the report, and do not let it alone exclude a candidate your other evidence favours: put that candidate in the near-miss panel with the assumption named. In one session such a proxy pushed out the headset with the second-highest published transmit power, contradicting the report's own link-budget analysis.
+
+**Risks no source can settle.** Some constraints cannot be verified by anyone: electronics in a sauna, a garment's long-term shape, a seller's future service. When the user knowingly accepts the risk, record it as `accepted_risk`. It is neither gated nor hidden: show it as its own chip ("not verifiable"), give what is known (for example published maximum operating temperatures, where manufacturers publish them), and turn it into usage guidance (let it cool before charging). Do not count it as a `PASS`.
+
+## Merchant trust
+
+When the candidate is a single product page, especially one the user linked or an unknown brand, check the seller before the product. Signals that a page is a reseller or dropshipping front:
+
+- No legal entity, registration number or postal address in the legal notice.
+- A phone number or company in another country than the one the site addresses.
+- A crossed-out "before" price far above what the product sells for elsewhere.
+- Delivery times of one to two weeks for a product shipped "from France".
+- Vague composition instead of a precise one (for cosmetics, a real INCI list; for electronics, a model number and a declaration of conformity).
+- A product URL slug ending in `-copy` or similar duplicates.
+- A price two or three times that of an established equivalent.
+
+Fetch the page with a prompt that asks for each of these explicitly, then search for independent reviews of the seller. Report the signals found, not a verdict on the seller's honesty.
+
 ## Plausibility checks
 
 Run these on every gating figure before trusting it.

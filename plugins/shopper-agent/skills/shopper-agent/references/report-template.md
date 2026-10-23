@@ -40,7 +40,7 @@ Keep the maths visible and the verdict unambiguous. Provide a reset control back
 One per survivor. Each needs:
 
 - **Lead image** on a light plate, or a labelled to-scale drawing when images could not be acquired (see `image-sourcing.md`)
-- Rank label ("best overall", "best value") and an all-pass badge
+- Rank label ("best overall", "best value") and an all-pass badge. Show it only when every hard constraint is `PASS`; a card carrying a `PASS_MARGINAL` or a borrowed figure says what remains to verify instead ("passes, noise to confirm"). One session labelled a card "all conditions met" while its idle noise had been measured on a sibling CPU.
 - Model name plus **destination-market SKU**
 - Price with the merchant named
 - Spec table with the gating specs, marking margin on threshold constraints and colouring good / marginal values
