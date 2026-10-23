@@ -52,30 +52,35 @@ Order cards by a stated ranking rationale, not by price alone.
 
 Mark sponsored, gifted, or affiliate sources on the citation itself. Link out only; an embedded player is an external asset and will not render.
 
-### 5. Near-miss / override panel
+### 5. Lineage panel
+One row per finalist and near-miss: the relative checked at the same manufacturer (successor, step-up, cheaper sibling), what it changes **for this user's gating specs**, its price at a named merchant, and a verdict pill (over budget, nothing more, promoted, stock at risk). An unchanged gating spec is worth showing: "same 30 m range for 116 EUR more" is the answer the user wanted.
+
+Each solution card also gets a one-line `Lineage:` note under its weakest point, and a replaced start model says so in the weakest point itself. Procedure: `lineage-check.md`.
+
+### 6. Near-miss / override panel
 Visually distinct from verified cards so it cannot be mistaken for a recommendation. For each entry: what it would have won on, the **exact unmet constraint**, and any secondary catch.
 
 This exists because the most interesting finding in a search is often a product that beats the field and fails one rule. The user may rationally overrule that rule. They cannot overrule what you hid.
 
 Rank by how few constraints are missed.
 
-### 6. Audit ledger
+### 7. Audit ledger
 Every candidate considered, with jug/spec summary, price, verdict, and binding reason. User-facing, sorted by the dominant spec.
 
 Two jobs: it proves the search was thorough, and it lets the user overrule any single exclusion. Include previously-recommended products that a constraint change has since disqualified, so the history is legible.
 
-### 7. Comparison modal
+### 8. Comparison modal
 Side-by-side spec matrix across finalists plus the near-misses. Sticky row headers, colour-coded cells, a verdict row at the bottom.
 
-### 8. Category usage guidance
+### 9. Category usage guidance
 Three or four practical notes from the domain primer. This is the shopper expertise the user lacked, and it belongs in the artifact rather than only in chat.
 
-### 9. Confidence disclosure
+### 10. Confidence disclosure
 An explicit list of what could not be verified, what was tried, and what the user should check themselves. Name the specific figure and its source tier. Example: a height sourced only from a retailer field with transposed axes, flagged medium-confidence with a recommendation to measure on arrival.
 
 Name every **video-only figure** here: a value whose sole source is a video, with its method (spoken claim, stated measurement, or caption-timestamp lower bound) and any sponsorship. A duration taken from video timestamps is disclosed as a lower bound, since edits understate it.
 
-### 10. Footer
+### 11. Footer
 Price timestamp with a drift caveat, source policy note, image attribution, and any category-wide exclusion (for example, all units of an incompatible mains voltage).
 
 ## Update in place
