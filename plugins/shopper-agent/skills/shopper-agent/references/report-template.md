@@ -86,6 +86,21 @@ Name every **video-only figure** here: a value whose sole source is a video, wit
 ### 11. Footer
 Price timestamp with a drift caveat, source policy note, image attribution, and any category-wide exclusion (for example, all units of an incompatible mains voltage).
 
+## Check before publishing
+
+Run every step below before each publish, revisions included. In four sessions the "check the render" task was ticked after a syntax check alone, and the published reports carried a headline count that disagreed with the ledger ("21 audited" against 17 entries in the tool; "8 of 58" against 13), internal rule codes in user-facing text, and a monthly payment that a recalculation later corrected.
+
+1. **Script syntax.** Extract each inline `<script>` and run `node --check` on it.
+2. **One source for every count.** Generate headline counts, tallies and pass totals from the same data array as the ledger and the interactive tool, then assert that the headline count, the ledger rows and the tool's entries agree.
+3. **Recompute derived numbers.** Recompute every total, margin, monthly payment and kit sum with a script from the underlying data, and compare it with what the page prints.
+4. **Render and look.** Open the page in a headless browser, take screenshots at desktop width and at phone width (about 390 px), in light and dark theme, and read them back. Look for overlapping labels, clipped tables, unreadable contrast and punctuation that wraps alone onto a new line.
+5. **Exercise the tools.** Move each interactive control to both extremes and back to the reset, and check the console for errors.
+6. **User-facing text.** No internal identifiers (`H1`, `C1`, `T5`, file names) unless the page explains them. One language throughout, the report language (see Phase 2 in `SKILL.md`). Numbers formatted for the locale.
+7. **Evidence.** Every `PASS` on a hard constraint rests on a tier 1-3 source, never a search snippet. Borrowed figures are marked. Every price carries its date.
+8. **Links.** Each merchant link opens the product page at the merchant named on the card. A comparator or search page is labelled as such, never presented as the merchant.
+
+**A step that could not run is reported, never ticked.** When no headless browser is available (see `capabilities`), the confidence disclosure says the rendering was not checked, and the chat summary says so too.
+
 ## Update in place
 
 Republish to the **same artifact URL** on every revision, by passing the same file path in-session or the `url` parameter otherwise. The user keeps one link across the whole conversation.

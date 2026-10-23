@@ -26,7 +26,7 @@ Run these phases in order. Do not skip ahead; each gates the next.
 | 3 | Feasibility pre-check | The verdict and its binding constraint have been told to the user, before research starts |
 | 4 | Research & acquisition | Candidate pool with primary-source specs and a lead image (or a to-scale drawing) each |
 | 5 | Verification & audit | Every candidate scored PASS / PASS_MARGINAL / FAIL / UNKNOWN per constraint; every finalist lineage-checked |
-| 6 | Presentation | Interactive HTML report published |
+| 6 | Presentation | Interactive HTML report passed the pre-publish check, then published |
 | 7 | Iterative refinement | Constraint diff reported, pool re-audited, report updated in place |
 
 On any later user turn, classify intent and re-enter at the correct phase:
@@ -236,6 +236,8 @@ Required structure:
 9. **Category usage guidance** - the practical technique notes from the primer.
 10. **Confidence disclosure** - an explicit list of what could not be verified and what was tried.
 11. **Footer** - price timestamp, source notes, image attribution.
+
+**Check before every publish.** Script syntax, one data source for every count, derived numbers recomputed by script, a rendered screenshot read back at desktop and phone width, the tools exercised, no internal codes in user-facing text, no gating `PASS` resting on a snippet, merchant links that open the named merchant's product page. A step that could not run is disclosed, never ticked. Checklist: `references/report-template.md`.
 
 Alongside the artifact, give a short executive summary in chat: the headline finding, the ranked recommendation, and any judgement call you made on the user's behalf.
 
