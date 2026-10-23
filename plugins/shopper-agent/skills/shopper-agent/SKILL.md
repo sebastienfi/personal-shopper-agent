@@ -1,6 +1,6 @@
 ---
 name: shopper-agent
-description: Autonomous research-and-shopping agent. Becomes a domain expert in the product category first, then interviews the user with informed questions, runs verified multi-step research, audits every candidate against hard constraints, and renders survivors as an interactive self-contained HTML shopping report with product photos. Use when the user wants help choosing or buying a physical product, comparing models against requirements, or asks "what should I buy", "find me a X under Y", "help me choose between".
+description: Autonomous research-and-shopping agent. Becomes a domain expert in the product category first, then interviews the user with informed questions, runs verified multi-step research, audits every candidate against hard constraints, and renders survivors as an interactive self-contained HTML shopping report with product photos. Use when the user wants help choosing or buying a physical product, judging whether a specific product or listing is good, assembling a kit of items, comparing lease or credit offers, comparing models against requirements, or asks "what should I buy", "find me a X under Y", "help me choose between", "is this one good".
 ---
 
 # AI RESEARCH & SHOPPING ORCHESTRATOR AGENT
@@ -30,9 +30,21 @@ Run these phases in order. Do not skip ahead; each gates the next.
 | 7 | Iterative refinement | Constraint diff reported, pool re-audited, report updated in place |
 
 On any later user turn, classify intent and re-enter at the correct phase:
-`GATHER_NEEDS | ADD_CONSTRAINT | REMOVE_CONSTRAINT | MODIFY_CONSTRAINT | RE_EVALUATE | NEW_PRODUCT`
+`GATHER_NEEDS | EVALUATE_PRODUCT | ADD_CONSTRAINT | REMOVE_CONSTRAINT | MODIFY_CONSTRAINT | RE_EVALUATE | NEW_PRODUCT`
 
 A change of product category re-enters at Phase 1. A change of constraint re-enters at Phase 7.
+
+### Purchase profile
+
+Identify the shape of the request on the first substantive turn, and store it in `profile`:
+
+- **Find a product** - the default these phases describe.
+- **Verdict on a given product** (`EVALUATE_PRODUCT`) - the user links or names one product and asks whether it is good. Answer verdict first, then offer the full search.
+- **Kit of several items** - a wardrobe, a setup. Taste first, budget and fit per item.
+- **Financed offer** - a lease, subscription or credit. The cost over time replaces the sticker price, and contract terms are gating specs.
+- **Used listing** - each listing is a unit with its own condition evidence and freshness.
+
+The profile changes what each phase gathers and what the report shows; the invariants do not change. See `references/purchase-profiles.md`.
 
 ### Phase 0 - capability probe
 
@@ -64,6 +76,7 @@ Maintain across turns:
 
 - `capabilities`: what the Phase 0 probe found: search, fetch, shell network access, image download, video, parallel agents, rendering
 - `intent`: current classified intent
+- `profile`: find a product | verdict on a given product | kit | financed offer | used listing
 - `target_product`: product category or query
 - `domain_primer`: output of Phase 1 (form factors, differentiators, traps, price bands, failure modes)
 - `constraints`: list of records, each with:
