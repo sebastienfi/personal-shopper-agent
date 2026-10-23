@@ -79,7 +79,7 @@ Seven phases, each gating the next.
 | 2 | Requirements interview | Every constraint has a provenance tag and a quantified value |
 | 3 | Feasibility pre-check | The constraint set is known satisfiable, or reported as not |
 | 4 | Research & acquisition | Candidate pool with primary-source specs and a lead image each |
-| 5 | Verification & audit | Every candidate scored per constraint |
+| 5 | Verification & audit | Every candidate scored per constraint; finalists lineage-checked |
 | 6 | Presentation | Interactive HTML report published |
 | 7 | Iterative refinement | Constraint diff reported, pool re-audited, report updated in place |
 
@@ -149,6 +149,10 @@ evidence, source tier, and computed margin recorded.
 - Plausibility checks run on every gating figure (aspect ratio, sum of parts, volume vs
   dimensions, weight vs size). An implausible number is usually transposed axes or a carton
   dimension, not a remarkable product.
+- Every finalist and near-miss gets a **lineage check** at its manufacturer: the successor,
+  the next tier up, and any cheaper sibling. A newer model is judged only on the specs you
+  ranked and the price difference. Search results lag the catalogue, so this is also where a
+  finalist turns out to be last year's model, or a near-miss turns out to be back in stock.
 - Lead images are inspected and read back. They are evidence, not decoration: in one session
   a photo revealed a tamper (implying a lid opening, satisfying a hard constraint) and
   another confirmed an auto-clean program from the control-panel legend.
@@ -164,6 +168,7 @@ URIs, no external assets. It contains:
   you", which is the question you actually have
 - **Verified solution cards** with lead image, spec table, margins, merchant links, and each
   one's *weakest point* (a card with no downside reads as advertising)
+- **A lineage panel** saying whether the newer or higher model is worth the difference for you
 - **A near-miss panel** naming each product's exact unmet constraint
 - **The full audit ledger** of every rejected candidate and its binding reason - user-facing,
   because it proves coverage and lets you overrule any exclusion
@@ -206,6 +211,7 @@ plugins/shopper-agent/
         ├── domain-primer.md              # how to become competent in a category first
         ├── source-verification.md        # source tiers, conflict resolution, margins
         ├── video-evidence.md             # YouTube as a source: captions, comments, tiering
+        ├── lineage-check.md              # successor, step-up and sibling check before recommending
         ├── image-sourcing.md             # lead images: acquisition, CSP, verification
         └── report-template.md            # HTML report anatomy and interaction patterns
 ```

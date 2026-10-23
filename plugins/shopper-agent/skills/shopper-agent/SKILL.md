@@ -24,7 +24,7 @@ Run these phases in order. Do not skip ahead; each gates the next.
 | 2 | Requirements interview | Every constraint has a provenance tag and a quantified value |
 | 3 | Feasibility pre-check | The constraint set is known to be satisfiable, or reported as not |
 | 4 | Research & acquisition | Candidate pool with primary-source specs and a lead image each |
-| 5 | Verification & audit | Every candidate scored PASS / PASS_MARGINAL / FAIL / UNKNOWN per constraint |
+| 5 | Verification & audit | Every candidate scored PASS / PASS_MARGINAL / FAIL / UNKNOWN per constraint; every finalist lineage-checked |
 | 6 | Presentation | Interactive HTML report published |
 | 7 | Iterative refinement | Constraint diff reported, pool re-audited, report updated in place |
 
@@ -51,6 +51,7 @@ Maintain across turns:
 - `audit_log`: per candidate, per constraint: verdict, evidence, source, margin
 - `verified_solutions`: candidates whose every hard constraint is PASS
 - `near_misses`: candidates failing exactly one or two constraints, with the binding one named
+- `lineage`: per finalist and near-miss, the successor, step-up and cheaper siblings checked at the same manufacturer, their deltas on the gating specs, price delta, and verdict
 - `unverified`: specs that could not be confirmed, and what was tried
 - `research_budget`: rounds spent, rounds without a new PASS candidate
 
@@ -162,6 +163,8 @@ Video figures follow the same ladder: the manufacturer's own channel is a market
 
 Full procedures: `references/source-verification.md`.
 
+**Lineage check.** Before presenting, check the family of every verified solution and near-miss at the same manufacturer: the successor, the next tier up, and any cheaper sibling or still-sold predecessor. Establish it from the manufacturer's range page, compare on the gating specs and the user's ranked criteria only, and record the price delta at a named merchant with stock. Promote any relative that plausibly passes into `candidate_pool` and audit it; flag lifecycle risk when the start model has been replaced; re-verify the start model's price and stock while you are there. Search results lag the catalogue, so a finalist can be last year's model. See `references/lineage-check.md`.
+
 ## 9. PHASE 6 - PRESENTATION
 
 Deliver a **single self-contained HTML file published as an Artifact** - inline CSS and JS, no external assets, images embedded as data URIs. Load the `artifact-design` skill before writing it.
@@ -172,12 +175,13 @@ Required structure:
 2. **Constraint strip** - the active constraint set; on a revision, the diff.
 3. **Interactive tool for the binding constraint** - the highest-value element in the report. Let the user drag the binding threshold and watch the field re-audit live, so they can see what relaxing it buys. Build this whenever a single constraint dominates.
 4. **Verified solution cards** - one per survivor, each with a lead image, spec table, budget badge, margin on threshold constraints, merchant links, and a plain-language "why this one".
-5. **Near-miss / override panel** - visually distinct from verified solutions, each entry naming the exact unmet constraint. Rank by how few constraints they miss.
-6. **Audit ledger** - every rejected candidate and its binding reason, user-facing. This proves coverage and lets the user overrule you. Not an internal log.
-7. **Comparison modal** - side-by-side spec matrix across finalists and near-misses.
-8. **Category usage guidance** - the practical technique notes from the primer.
-9. **Confidence disclosure** - an explicit list of what could not be verified and what was tried.
-10. **Footer** - price timestamp, source notes, image attribution.
+5. **Lineage panel** - per finalist, the newer or higher model checked at the same manufacturer, what it changes for this user, its price, and a verdict. Each solution card also carries a one-line lineage note.
+6. **Near-miss / override panel** - visually distinct from verified solutions, each entry naming the exact unmet constraint. Rank by how few constraints they miss.
+7. **Audit ledger** - every rejected candidate and its binding reason, user-facing. This proves coverage and lets the user overrule you. Not an internal log.
+8. **Comparison modal** - side-by-side spec matrix across finalists and near-misses.
+9. **Category usage guidance** - the practical technique notes from the primer.
+10. **Confidence disclosure** - an explicit list of what could not be verified and what was tried.
+11. **Footer** - price timestamp, source notes, image attribution.
 
 Alongside the artifact, give a short executive summary in chat: the headline finding, the ranked recommendation, and any judgement call you made on the user's behalf.
 
@@ -199,6 +203,7 @@ When a constraint is added, removed, or modified:
 
 - **Zero hallucination.** Every spec, price, and availability claim traces to a tool call against an acceptable source. Model recall is not a source. A search snippet is not a source.
 - **Strict verification.** No product reaches `verified_solutions` with an unverified gating spec. `UNKNOWN` excludes.
+- **Check the family before recommending.** No finalist is presented without its lineage check. Say plainly when the newer model is not worth the difference, and why.
 - **Never hide an interesting exclusion.** A candidate that beats the field but fails one constraint belongs in the near-miss panel with its binding reason stated, not in silence. The user may overrule a constraint; they cannot overrule what you concealed.
 - **Report the binding constraint, always.** When few or no candidates survive, the deliverable is the binding-constraint analysis with a quantified relaxation payoff.
 - **Distinguish the user's guesses from their requirements.** Re-derive estimates rather than gating on them.

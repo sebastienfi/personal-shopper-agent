@@ -27,6 +27,7 @@ plugins/shopper-agent/skills/shopper-agent/
     ├── domain-primer.md              # how to become competent in a category first
     ├── source-verification.md        # source tiers, conflict resolution, margins
     ├── video-evidence.md             # YouTube as a source: captions, comments, tiering
+    ├── lineage-check.md              # successor, step-up and sibling check before recommending
     ├── image-sourcing.md             # lead images: acquisition, CSP, verification
     └── report-template.md            # HTML report anatomy and interaction patterns
 ```
@@ -82,6 +83,12 @@ Read `SKILL.md` before changing agent behaviour.
   belongs in a visually distinct near-miss panel with its binding reason stated. The
   user may overrule a constraint; they cannot overrule what was concealed. This
   supersedes any blanket "never display a failing product" reading.
+- **Finalists are lineage-checked before they are recommended.** For every verified
+  solution and near-miss, check the successor, the next tier up and cheaper siblings at
+  the same manufacturer, from its range page. Judge them on the gating specs and the
+  user's ranked criteria only, with a price delta at a named merchant in stock. A relative
+  that plausibly passes enters the candidate pool and is audited; a replaced start model
+  carries a lifecycle warning. The pass also re-verifies the start model's price and stock.
 - **The rejected-candidate ledger is a user-facing deliverable**, not an internal log.
   It proves coverage and enables overruling.
 - **Delta processing over re-research.** When the user changes a constraint, re-audit
