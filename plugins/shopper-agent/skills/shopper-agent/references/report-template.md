@@ -11,6 +11,7 @@ Load the `artifact-design` skill before writing. Publish with the `Artifact` too
 - `body` sets an explicit token background.
 - Wide content (tables, charts) scrolls inside its own `overflow-x: auto` container. The page body never scrolls sideways.
 - `font-variant-numeric: tabular-nums` everywhere digits align.
+- Write in the report language settled in Phase 2: the user's usual language, not the language of their latest message.
 - Format prices and decimals in the destination locale (`95,44 €` for France, not `95.44 EUR`).
 
 ## Structure

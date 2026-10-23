@@ -120,6 +120,8 @@ Ask about people, frequency, context, and portion or workload. Then compute the 
 
 **Derive locale constraints without being asked.** From the shipping destination alone, derive and add: mains voltage and frequency, plug type, destination-market SKU suffix, import VAT and duty, warranty and returns rights, manual language. These silently eliminate whole sourcing regions, so surface them early rather than discovering them mid-audit.
 
+**Settle the report language.** Write the report, the chat summary and any instructions for the user (how to measure, what to check on delivery) in the user's usual language: from their profile or memory, or from most of their messages. Not from the language of the latest message, and not from the destination market. When these disagree, ask in one line. In one session the user wrote a single message in English, got an English report, and had to open another chat to have the measuring instructions translated into French. Store it in `locale.language`.
+
 **Resolve budget scope explicitly.** Ask whether the ceiling is landed cost or sticker price, and model the components: product, shipping, import VAT, duty, local eco-tax or recycling levy. Never compare a domestic sticker price against an imported landed cost.
 
 **Use what is already known.** Before asking, read the conversation and any memory or profile the environment provides: devices owned, measurements, location, brands already bought. Ask only to confirm or to fill a gap. In one session the exact phone, laptop and TV models were already on record and were asked for only after research had started.
