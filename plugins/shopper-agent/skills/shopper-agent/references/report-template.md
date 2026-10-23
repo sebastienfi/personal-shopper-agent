@@ -11,12 +11,15 @@ Load the `artifact-design` skill before writing. Publish with the `Artifact` too
 - `body` sets an explicit token background.
 - Wide content (tables, charts) scrolls inside its own `overflow-x: auto` container. The page body never scrolls sideways.
 - `font-variant-numeric: tabular-nums` everywhere digits align.
+- Write in the report language settled in Phase 2: the user's usual language, not the language of their latest message.
 - Format prices and decimals in the destination locale (`95,44 €` for France, not `95.44 EUR`).
 
 ## Structure
 
 ### 1. Masthead
 Lead with the **headline finding**, not a greeting. If one constraint dominated the search, say so here. Include a compact digest of the brief: constraint values, budget, destination, and a verified-versus-audited count.
+
+When `open_questions` is not empty, answer each one here, directly, with its evidence and its limits. A question the user asked is part of the deliverable, not context for a filter. Example: a per-device table saying whether the USB-C dongle or Bluetooth is the more reliable link, and why.
 
 ### 2. Constraint strip
 The active constraint set as a compact row. On a revision, render it as a **diff** with removed / modified / added tags.
@@ -26,18 +29,19 @@ The active constraint set as a compact row. On a revision, render it as a **diff
 
 The pattern: let the user drag the binding threshold and watch the entire field re-audit live. This converts "here is what qualifies" into "here is what your constraint costs you", which is the question they actually have.
 
-Two shapes that worked:
+Shapes that worked:
 
 - **Threshold sweep.** Every candidate drawn to scale against a draggable limit line, with a live pass/blocked tally. Used for a height ceiling: dragging it from 35 to 39 cm visibly tripled the qualifying field, which was the single most actionable fact in the report.
 - **Requirement calculator.** Sliders for the use-case inputs, resolving to a computed requirement against a fixed product capability, with a pass/fail verdict box. Used for portion planning against a jug's working fill line.
+- **Scale line-up.** When size or discretion is a criterion, every candidate drawn to the same scale beside an everyday reference object (a bank card, a can, an A4 sheet), with the threshold drawn as a line where one exists. Used for mini PCs on a desk, where litres meant nothing to the buyer and a card beside each box did. See `image-sourcing.md`.
 
 Keep the maths visible and the verdict unambiguous. Provide a reset control back to the user's stated brief.
 
 ### 4. Verified solution cards
 One per survivor. Each needs:
 
-- **Lead image** on a light plate (see `image-sourcing.md`)
-- Rank label ("best overall", "best value") and an all-pass badge
+- **Lead image** on a light plate, or a labelled to-scale drawing when images could not be acquired (see `image-sourcing.md`)
+- Rank label ("best overall", "best value") and an all-pass badge. Show it only when every hard constraint is `PASS`; a card carrying a `PASS_MARGINAL`, a borrowed figure or an accepted risk says what remains to verify instead ("passes, noise to confirm"). One session labelled a card "all conditions met" while its idle noise had been measured on a sibling CPU.
 - Model name plus **destination-market SKU**
 - Price with the merchant named
 - Spec table with the gating specs, marking margin on threshold constraints and colouring good / marginal values
@@ -83,11 +87,30 @@ Name every **video-only figure** here: a value whose sole source is a video, wit
 ### 11. Footer
 Price timestamp with a drift caveat, source policy note, image attribution, and any category-wide exclusion (for example, all units of an incompatible mains voltage).
 
-## Update in place
+## Check before publishing
 
-Republish to the **same artifact URL** on every revision, by passing the same file path in-session or the `url` parameter otherwise. The user keeps one link across the whole conversation.
+Run every step below before each publish, revisions included. In four sessions the "check the render" task was ticked after a syntax check alone, and the published reports carried a headline count that disagreed with the ledger ("21 audited" against 17 entries in the tool; "8 of 58" against 13), internal rule codes in user-facing text, and a monthly payment that a recalculation later corrected.
 
-Change the `<title>` and favicon only on a hard pivot in what the report is about. A constraint being removed such that the entire product class changes is a hard pivot; adding a candidate is not.
+1. **Script syntax.** Extract each inline `<script>` and run `node --check` on it.
+2. **One source for every count.** Generate headline counts, tallies and pass totals from the same data array as the ledger and the interactive tool, then assert that the headline count, the ledger rows and the tool's entries agree.
+3. **Recompute derived numbers.** Recompute every total, margin, monthly payment and kit sum with a script from the underlying data, and compare it with what the page prints.
+4. **Render and look.** Open the page in a headless browser, take screenshots at desktop width and at phone width (about 390 px), in light and dark theme, and read them back. Look for overlapping labels, clipped tables, unreadable contrast and punctuation that wraps alone onto a new line.
+5. **Exercise the tools.** Move each interactive control to both extremes and back to the reset, and check the console for errors.
+6. **User-facing text.** No internal identifiers (`H1`, `C1`, `T5`, file names) unless the page explains them. One language throughout, the report language (see Phase 2 in `SKILL.md`). Numbers formatted for the locale.
+7. **Evidence.** Every `PASS` on a hard constraint rests on a tier 1-3 source, never a search snippet. Borrowed figures are marked. Every price carries its date.
+8. **Links.** Each merchant link opens the product page at the merchant named on the card. A comparator or search page is labelled as such, never presented as the merchant.
+
+**A step that could not run is reported, never ticked.** When no headless browser is available (see `capabilities`), the confidence disclosure says the rendering was not checked, and the chat summary says so too.
+
+## Revision or alternative
+
+Decide which of two things a change is before publishing.
+
+**A revision of the same brief** - a constraint added, relaxed or tightened, a candidate added, a price refreshed. Republish to the **same artifact URL**, by passing the same file path in-session or the `url` parameter otherwise. The user keeps one link, and the constraint strip shows the diff.
+
+**An alternative direction** - another style, another way to buy (lease against credit), another product class, or any change after which the user may want to compare with what came before. Publish a **new artifact**, with a title that names the direction, and leave the earlier one untouched. Link the reports to each other in their footers. In the wardrobe session the user asked for exactly this ("create new artifacts so we can keep the previous ideas") after a revision had already overwritten the first style. When in doubt, ask in one line which the user wants.
+
+Change the `<title>` and favicon of a revised artifact only when its headline subject changes; adding a candidate does not. A change of product class is never a revision: it is an alternative direction and gets its own artifact.
 
 ## Accompanying chat summary
 

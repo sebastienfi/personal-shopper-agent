@@ -28,8 +28,10 @@ plugins/shopper-agent/skills/shopper-agent/
     ├── source-verification.md        # source tiers, conflict resolution, margins
     ├── video-evidence.md             # YouTube as a source: captions, comments, tiering
     ├── lineage-check.md              # successor, step-up and sibling check before recommending
-    ├── image-sourcing.md             # lead images: acquisition, CSP, verification
-    └── report-template.md            # HTML report anatomy and interaction patterns
+    ├── image-sourcing.md             # lead images, scale drawings, everyday-object comparisons
+    ├── research-fanout.md            # parallel research agents: brief, search cap, output schema
+    ├── purchase-profiles.md          # verdict on one product, kits, financed offers, used listings
+    └── report-template.md            # HTML report anatomy, interactions, pre-publish check
 ```
 
 There is deliberately **no `.claude/skills/` copy or symlink in this repo**. It would load
@@ -46,8 +48,8 @@ That shadows any installed copy of the same plugin (verified: with both present,
 working tree wins and only one entry loads), so a plain `claude` still gets the released
 snapshot from `~/.claude/plugins/cache/`.
 
-`SKILL.md` is invoked via `/shopper-agent` and holds the authoritative 7-phase
-sequence. The reference files hold the detailed playbooks and are read on demand
+`SKILL.md` is invoked via `/shopper-agent` and holds the authoritative sequence: a
+capability probe (Phase 0), then seven phases. The reference files hold the detailed playbooks and are read on demand
 (progressive disclosure) - `SKILL.md` points to each at the relevant phase.
 
 Read `SKILL.md` before changing agent behaviour.
@@ -61,7 +63,9 @@ Read `SKILL.md` before changing agent behaviour.
   because the missing expertise is why they asked.
 - **Feasibility is checked before the candidate pool is built.** Constraint sets can
   be jointly unsatisfiable. Detect `OVER_DETERMINED` early, name the binding
-  constraint, and report it as a finding rather than searching indefinitely.
+  constraint, and report it as a finding rather than searching indefinitely. The
+  verdict is always told to the user before research starts, `TIGHT` included, with
+  what each relaxation would buy.
 - **Constraint provenance is tracked.** Each constraint is tagged
   `stated_hard | stated_soft | user_estimate | derived`. A `user_estimate` (the user
   guessed - question marks, "maybe", "or") is **never gated on**; re-derive it from
@@ -99,10 +103,16 @@ Read `SKILL.md` before changing agent behaviour.
   them; the pool is cumulative.
 - **Output is a single self-contained HTML artifact** (inline CSS/JS, images as
   `data:` URIs, no external assets except Google Fonts), republished to the **same
-  artifact URL** across revisions.
+  artifact URL** across revisions of the same brief. An alternative direction (another
+  style, another way to buy) is a new artifact, and the earlier one is kept.
 - **Every candidate carries a lead image**, verified by looking at it. Images are an
   evidence source, not decoration: they have confirmed physical features that text did
-  not mention.
+  not mention. When the environment cannot download images, a labelled to-scale drawing
+  from verified dimensions replaces it, and the lost image check is disclosed.
+- **Capabilities are probed, not remembered.** Phase 0 tests search, fetch, shell
+  network access, images, video, agents and rendering before anything else. The skill
+  never lists sites that worked or failed before: access changes, and such a list
+  biases source choice.
 
 ## Conventions
 

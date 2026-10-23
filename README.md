@@ -50,7 +50,8 @@ The agent does live research and writes an interactive HTML report, so it needs:
   and **Skills** under Organization settings → Skills.
 
 Without these the skill will still trigger and then quietly underperform, so it is worth
-confirming before the first run. Image acquisition also uses `curl` and, on macOS, `sips`.
+confirming before the first run. Image acquisition also uses `curl` and, on macOS, `sips`;
+the agent probes these first and falls back to to-scale drawings when they are unavailable.
 
 ### Updating
 
@@ -71,17 +72,29 @@ Then answer 3-4 questions and read the report.
 
 ## How it works
 
-Seven phases, each gating the next.
+A capability probe, then seven phases, each gating the next.
 
 | Phase | Name | Gate to pass |
 |---|---|---|
+| 0 | Capability probe | Knows which tools work here; you are told what is degraded |
 | 1 | Domain primer | Can name the form factors, differentiating specs, and spec traps |
 | 2 | Requirements interview | Every constraint has a provenance tag and a quantified value |
-| 3 | Feasibility pre-check | The constraint set is known satisfiable, or reported as not |
-| 4 | Research & acquisition | Candidate pool with primary-source specs and a lead image each |
+| 3 | Feasibility pre-check | The verdict and binding constraint are told to you before research |
+| 4 | Research & acquisition | Candidate pool with primary-source specs and a lead image (or scale drawing) each |
 | 5 | Verification & audit | Every candidate scored per constraint; finalists lineage-checked |
-| 6 | Presentation | Interactive HTML report published |
+| 6 | Presentation | Interactive HTML report checked, then published |
 | 7 | Iterative refinement | Constraint diff reported, pool re-audited, report updated in place |
+
+### 0. Check what works here, and what kind of purchase this is
+
+Shell network access, image downloads, YouTube, parallel agents and a headless browser vary
+between environments and change over time. One cheap probe each, before anything else, and
+you are told in one line what will be degraded and what replaces it. Without images, each
+candidate is drawn to scale from its verified dimensions, labelled as a drawing.
+
+The request is also classified: finding a product, a verdict on one you already found, a kit
+of several items, a lease or credit offer, or a used listing. Each changes what the phases
+gather. See `references/purchase-profiles.md`.
 
 ### 1. Learn the category first
 
@@ -113,8 +126,9 @@ Constraint sets can be jointly unsatisfiable. Using the primer's tradeoff map, t
 three most likely conflicting constraints are probed and the space bounded arithmetically,
 then classified `SATISFIABLE | TIGHT | OVER_DETERMINED`.
 
-If over-determined, the agent **stops and names the binding constraint** instead of searching
-indefinitely. That's a finding, not a failure. Geometry also cuts the other way: it separates
+The verdict is always told to you before research starts. If the fit is tight, you see what
+each relaxation would buy. If over-determined, the agent **stops and names the binding
+constraint** instead of searching indefinitely. That's a finding, not a failure. Geometry also cuts the other way: it separates
 "physically impossible" from "nobody builds it", which are different answers for you.
 
 ### 4. Research with a fetch fallback ladder
@@ -182,8 +196,9 @@ impact statement: what changed, what now fails, what got promoted. No silent re-
 
 Relaxing a constraint re-audits previously *failed* candidates rather than discarding them -
 the pool is cumulative. New searches run only for the newly binding criteria, and only if
-fewer than three verified solutions remain. The report republishes to the same URL, so you
-keep one link.
+fewer than three verified solutions remain. A revision republishes to the same URL, so you
+keep one link. An alternative direction (another style, credit instead of a lease) gets its
+own report, and the earlier one is kept for comparison.
 
 ## Design principles
 
@@ -212,8 +227,10 @@ plugins/shopper-agent/
         ├── source-verification.md        # source tiers, conflict resolution, margins
         ├── video-evidence.md             # YouTube as a source: captions, comments, tiering
         ├── lineage-check.md              # successor, step-up and sibling check before recommending
-        ├── image-sourcing.md             # lead images: acquisition, CSP, verification
-        └── report-template.md            # HTML report anatomy and interaction patterns
+        ├── image-sourcing.md             # lead images, scale drawings, everyday-object comparisons
+        ├── research-fanout.md            # parallel research agents: brief, search cap, output schema
+        ├── purchase-profiles.md          # verdict on one product, kits, financed offers, used listings
+        └── report-template.md            # HTML report anatomy, interactions, pre-publish check
 ```
 
 `SKILL.md` holds the authoritative phase sequence and stays scannable. The reference files

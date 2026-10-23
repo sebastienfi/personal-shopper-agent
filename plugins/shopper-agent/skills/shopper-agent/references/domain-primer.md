@@ -103,3 +103,15 @@ Ask only what the primer could not answer and what changes your next action. Goo
 - A **scope resolution**: "is that budget landed at your door, or the sticker price?"
 
 Bad questions after a primer are ones the primer already answered, or ones asking the user to supply a spec you should be deriving.
+
+## Interview gaps observed in live sessions
+
+Each Phase 2 rule in `SKILL.md` was added after a session paid for its absence.
+
+- **Already known, asked late.** The exact phone, laptop and TV models were on record, and were asked for only after research had started.
+- **Taste found late.** In a wardrobe session, "nothing close to the body" and "only Adidas and New Balance, for my wide feet" surfaced after two complete reports had been built on the wrong silhouette.
+- **Price for this buyer never asked.** In a car session, every advertised lease assumed the lowest-income incentive, and the household's bracket, trade-in and accepted deposit were never asked.
+- **Safety asked well.** A beard-dye session asked about past reactions to dye or black henna, and excluded the main allergen on a yes.
+- **A question turned into a filter.** "Which is more reliable, the USB-C dongle or Bluetooth?" became "Bluetooth required". The user noticed after four research agents were running, and each had to be amended.
+- **Wrong report language.** The user wrote one message in English, got an English report, and had to open another chat to have the measuring instructions translated into French.
+- **Verdict never sent.** In two sessions the constraint that decided everything (memory prices, the budget) was classified internally and surfaced only in the published report.

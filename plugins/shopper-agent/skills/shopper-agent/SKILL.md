@@ -1,6 +1,6 @@
 ---
 name: shopper-agent
-description: Autonomous research-and-shopping agent. Becomes a domain expert in the product category first, then interviews the user with informed questions, runs verified multi-step research, audits every candidate against hard constraints, and renders survivors as an interactive self-contained HTML shopping report with product photos. Use when the user wants help choosing or buying a physical product, comparing models against requirements, or asks "what should I buy", "find me a X under Y", "help me choose between".
+description: Autonomous research-and-shopping agent. Becomes a domain expert in the product category first, then interviews the user with informed questions, runs verified multi-step research, audits every candidate against hard constraints, and renders survivors as an interactive self-contained HTML shopping report with product photos. Use when the user wants help choosing or buying a physical product, judging whether a specific product or listing is good, assembling a kit of items, comparing lease or credit offers, comparing models against requirements, or asks "what should I buy", "find me a X under Y", "help me choose between", "is this one good".
 ---
 
 # AI RESEARCH & SHOPPING ORCHESTRATOR AGENT
@@ -20,24 +20,63 @@ Run these phases in order. Do not skip ahead; each gates the next.
 
 | Phase | Name | Gate to pass |
 |---|---|---|
+| 0 | Capability probe | You know which tools work here, and the user knows what is degraded |
 | 1 | Domain primer | You can name the form factors, differentiating specs, and spec traps |
 | 2 | Requirements interview | Every constraint has a provenance tag and a quantified value |
-| 3 | Feasibility pre-check | The constraint set is known to be satisfiable, or reported as not |
-| 4 | Research & acquisition | Candidate pool with primary-source specs and a lead image each |
+| 3 | Feasibility pre-check | The verdict, and the brief when a fan-out follows, have been told to the user before research starts |
+| 4 | Research & acquisition | Candidate pool with primary-source specs and a lead image (or a to-scale drawing) each |
 | 5 | Verification & audit | Every candidate scored PASS / PASS_MARGINAL / FAIL / UNKNOWN per constraint; every finalist lineage-checked |
-| 6 | Presentation | Interactive HTML report published |
+| 6 | Presentation | Interactive HTML report passed the pre-publish check, then published |
 | 7 | Iterative refinement | Constraint diff reported, pool re-audited, report updated in place |
 
 On any later user turn, classify intent and re-enter at the correct phase:
-`GATHER_NEEDS | ADD_CONSTRAINT | REMOVE_CONSTRAINT | MODIFY_CONSTRAINT | RE_EVALUATE | NEW_PRODUCT`
+`GATHER_NEEDS | EVALUATE_PRODUCT | ADD_CONSTRAINT | REMOVE_CONSTRAINT | MODIFY_CONSTRAINT | RE_EVALUATE | NEW_PRODUCT`
 
-A change of product category re-enters at Phase 1. A change of constraint re-enters at Phase 7.
+A change of product category re-enters at Phase 1. A change of constraint re-enters at Phase 7. A request to judge one named product (`EVALUATE_PRODUCT`) runs a short Phase 1 and the verdict path in `references/purchase-profiles.md`, and enters Phase 2 only if the user takes up the full search.
+
+### Purchase profile
+
+Identify the shape of the request on the first substantive turn, and store it in `profile`:
+
+- **Find a product** - the default these phases describe.
+- **Verdict on a given product** (`EVALUATE_PRODUCT`) - the user links or names one product and asks whether it is good. Answer verdict first, then offer the full search.
+- **Kit of several items** - a wardrobe, a setup. Taste first, budget and fit per item.
+- **Financed offer** - a lease, subscription or credit. The cost over time replaces the sticker price, and contract terms are gating specs.
+- **Used listing** - each listing is a unit with its own condition evidence and freshness.
+
+The profile changes what each phase gathers and what the report shows; the invariants do not change. See `references/purchase-profiles.md`.
+
+### Phase 0 - capability probe
+
+The tools available differ between environments and change over time: shell network access, image downloads, YouTube, parallel agents, a headless browser. Probe them once, before Phase 1, instead of discovering a gap halfway through research.
+
+Probe the path you are actually about to use, with one cheap call each:
+
+- **Web search and fetch** - one search and one fetch of a page in the category.
+- **Shell network access** - one `curl` to a manufacturer page in the category. This is the path the image ladder depends on.
+- **Image acquisition** - download one product image and check what arrived (`file`, `wc -c`).
+- **Video** - `yt-dlp --version`, then one flat search.
+- **Parallel agents** - whether a tool to launch research agents exists.
+- **Rendering** - whether a headless browser can open and screenshot a local HTML file, for the Phase 6 check.
+
+Record the results in `capabilities`. **Do not keep or consult a list of sites that worked or failed in earlier sessions.** Access changes, and such a list biases source choice toward whatever was reachable once. Probe; do not remember.
+
+Then:
+
+1. Tell the user in one line what will be degraded and what replaces it.
+2. Copy `capabilities` into every research-agent brief, so no agent retries a path that is known to be closed.
+3. Apply the degraded path: no images means a to-scale drawing (`references/image-sourcing.md`); no video means the video pass is skipped and disclosed; no parallel agents means the same brief run sequentially; no rendering means the Phase 6 check says so rather than being marked done.
+4. A missing capability never becomes an assumed value. Specs that only that tool could have confirmed go to `unverified`.
+
+Re-probe a capability only when a later call suggests it has changed.
 
 ## 3. STATE MANAGEMENT
 
 Maintain across turns:
 
+- `capabilities`: what the Phase 0 probe found: search, fetch, shell network access, image download, video, parallel agents, rendering
 - `intent`: current classified intent
+- `profile`: find a product | verdict on a given product | kit | financed offer | used listing
 - `target_product`: product category or query
 - `domain_primer`: output of Phase 1 (form factors, differentiators, traps, price bands, failure modes)
 - `constraints`: list of records, each with:
@@ -47,11 +86,13 @@ Maintain across turns:
   - `rationale`: why this value, especially for `derived` and re-derived estimates
 - `budget`: `{ ceiling, currency, scope: landed | sticker, components: {product, shipping, import_vat, duty, eco_tax} }`
 - `locale`: `{ ship_to, country, mains_voltage, plug_type, market_sku_suffix, language }`
-- `candidate_pool`: candidates with per-spec values **and the source tier for each**
-- `audit_log`: per candidate, per constraint: verdict, evidence, source, margin
+- `candidate_pool`: candidates with per-spec values **and the source tier for each**, plus the measurement conditions and, for a figure taken from another unit, what it was borrowed from
+- `audit_log`: per candidate, per constraint: verdict, evidence, source, margin, and the binding reason in plain words in the report language
 - `verified_solutions`: candidates whose every hard constraint is PASS
-- `near_misses`: candidates failing exactly one or two constraints, with the binding one named
+- `near_misses`: candidates that `FAIL` or are `UNKNOWN` on one or two hard constraints, or are kept out only by a `derived` assumption, with the binding one named
 - `lineage`: per finalist and near-miss, the successor, step-up and cheaper siblings checked at the same manufacturer, their deltas on the gating specs, price delta, and verdict
+- `accepted_risks`: risks no source can settle that the user knowingly accepts, with what is known about each
+- `open_questions`: comparative or explanatory questions the user asked, to be answered in the report
 - `unverified`: specs that could not be confirmed, and what was tried
 - `research_budget`: rounds spent, rounds without a new PASS candidate
 
@@ -92,9 +133,26 @@ Ask about people, frequency, context, and portion or workload. Then compute the 
 
 **Derive locale constraints without being asked.** From the shipping destination alone, derive and add: mains voltage and frequency, plug type, destination-market SKU suffix, import VAT and duty, warranty and returns rights, manual language. These silently eliminate whole sourcing regions, so surface them early rather than discovering them mid-audit.
 
+**Settle the report language.** Write the report, the chat summary and any instructions for the user (how to measure, what to check on delivery) in the user's usual language: from their profile, memory or most of their messages, not from the latest message or the destination market. When these disagree, ask in one line. Store it in `locale.language`.
+
 **Resolve budget scope explicitly.** Ask whether the ceiling is landed cost or sticker price, and model the components: product, shipping, import VAT, duty, local eco-tax or recycling levy. Never compare a domestic sticker price against an imported landed cost.
 
-**Question form.** Batch at most 3-4 questions in one pass. Offer concrete options with their consequences, mark a recommended default, and never ask what the primer or a search can answer. Ask only questions whose answers change what you do next.
+**Use what is already known.** Read the conversation and any memory or profile the environment provides (devices owned, measurements, location, brands already bought) before asking. Ask only to confirm or to fill a gap.
+
+**Find the facts that decide this purchase.** In priority order, because they cost the most when found late:
+
+1. **Safety.** When the primer flags a risk (an allergen, use in heat or water, children, a medical device), ask the one question that decides it, and turn the answer into a `derived` hard constraint.
+2. **The price for this buyer.** When it depends on who buys (incentive bracket, trade-in, existing contracts, accepted down payment), ask before searching.
+3. **Exact models it must work with.** When the product connects to, fits into or pairs with something the user owns, ask for the models, not the category. Compatibility is decided per model.
+4. **Taste.** For anything worn, displayed or furnished, ask about the look and fit they like, what they refuse, and the brands they already buy and why.
+
+**Keep the user's questions as questions.** A comparative or explanatory question ("which is more reliable for each of my devices, the USB-C dongle or Bluetooth?") goes into `open_questions` and is answered in the report with evidence. Do not quietly turn it into a filter.
+
+**Question form.** Batch at most 3-4 questions in one pass, taken from the list above in its order, then from the use case. Offer concrete options with their consequences, mark a recommended default, and never ask what the primer, memory or a search can answer. A second short pass is allowed only for a fact that gates. Ask only questions whose answers change what you do next.
+
+**Wait for answers.** End the turn and wait. Proceed on your stated defaults only when running unattended, and say at the top of the work which reading you took.
+
+Observed cases behind each of these rules: `references/domain-primer.md`.
 
 ## 6. PHASE 3 - FEASIBILITY PRE-CHECK
 
@@ -105,11 +163,21 @@ Before building a candidate pool, test whether the constraint set is jointly sat
 3. Do the arithmetic or geometry yourself to bound the space. Compute whether the request is physically possible before concluding it is merely unavailable. If the maths says it is possible, keep searching; if it says otherwise, stop and report.
 4. Classify the set: `SATISFIABLE` | `TIGHT` | `OVER_DETERMINED`.
 
-If `OVER_DETERMINED`, **stop and report before spending the research budget.** Name the binding constraint, show the evidence, quantify the tradeoff, and ask the user which constraint gives. Deliver this as a finding, not a failure.
+**Always tell the user the verdict before Phase 4**, whatever it is. It is cheap to give now and expensive to discover in the final report, after the research budget has been spent on a field the user might have widened.
+
+- `SATISFIABLE` - one line: which pair you probed and why it holds. Then proceed, unless a brief is due (below).
+- `TIGHT` - name the binding constraint, show the arithmetic, and quantify what each plausible relaxation buys ("at 750 EUR, about one machine qualifies; at 850 EUR, about five"). Offer to relax before searching, with a recommended default, and wait for the answer as in Phase 2.
+- `OVER_DETERMINED` - **stop and report before spending the research budget.** Name the binding constraint, show the evidence, quantify the tradeoff, and ask the user which constraint gives. Deliver this as a finding, not a failure.
+
+Keep the verdict to a few lines. It is a decision point, not a report.
+
+**Send the brief with it before an expensive fan-out.** When Phase 4 will launch several research agents or a large search budget, add one compact brief to the verdict message: the constraints with their provenance tags, the questions the report will answer, and the defaults you chose. Wait for the answer, as in Phase 2. A correction before launch costs one message; after launch it costs an amendment per agent.
 
 ## 7. PHASE 4 - RESEARCH & ACQUISITION
 
 **Search locale strategy.** Query in the destination market's language for price, stock, retailers, and reviews. Query in English or the manufacturer's language for spec sheets and manuals. Web search skews US; compensate deliberately.
+
+**Parallel research.** When the pool spans several brands, families or kit items, split it across research agents that all read one shared brief file: numbered constraints with provenance, evidence rules, the `capabilities` found in Phase 0, stop rules, an explicit search cap per agent (quotas can be shared by every agent in a turn), and a fixed per-candidate output schema with user-facing text kept apart from codes. Amend running agents rather than restarting them, tell the user what each slice found as it lands, and close the gaps on finalists yourself afterwards. See `references/research-fanout.md`.
 
 **Per candidate, acquire:** exact model and market SKU, every gating spec with its source, effective (not nominal) capacity or performance figures, landed price, stock status at a named merchant, review rating and count, and **a lead image**.
 
@@ -118,15 +186,19 @@ If `OVER_DETERMINED`, **stop and report before spending the research budget.** N
 1. WebFetch on the manufacturer's spec page or manual
 2. `curl` with a browser user-agent
 3. Manufacturer DAM/CDN, which often exposes both specs and images
-4. Price aggregators (idealo, ledenicheur, 123comparer and local equivalents)
+4. The destination market's price aggregators
 5. The manual or spec-sheet PDF
 6. An alternate-locale page for the same SKU
+
+Skip the rungs that `capabilities` says are closed in this environment (for example `curl` and the CDN when the shell has no network access).
 
 **A failed fetch never becomes an assumed value.** It becomes an entry in `unverified`.
 
 **Video pass.** For each finalist, and each near-miss whose binding constraint is still `UNKNOWN`, run a text-only YouTube pass: captions, description, comments, metadata. Video carries what spec pages omit - real setup time, noise, fit, washability, packed size, owner complaints. See `references/video-evidence.md`.
 
-**Lead image.** Acquire one per candidate. See `references/image-sourcing.md`. Images are also *evidence*: acquire them before the audit, because they frequently confirm or refute a claimed physical feature.
+**Lead image.** Acquire one per candidate. See `references/image-sourcing.md`. Images are also *evidence*: acquire them before the audit, because they frequently confirm or refute a claimed physical feature. When `capabilities` says images cannot be downloaded, draw each candidate to scale from its verified dimensions instead, labelled as a drawing, and disclose that the image check did not run.
+
+**Size against something familiar.** When size, fit or discretion is one of the user's criteria, show the candidates to scale beside an everyday object of standard size, even when photos exist. A photo shows what a product looks like; it does not show how big it is. See `references/image-sourcing.md`.
 
 **Research budget and stopping rule.** Track rounds. After 3 consecutive rounds yielding no new PASS candidate, stop searching and deliver what you have plus the binding-constraint analysis. Exhaustive search is not the deliverable; a decision is.
 
@@ -137,11 +209,13 @@ Score every candidate against every hard constraint and the budget. Record verdi
 **Verdicts:**
 
 - `PASS` - satisfied, with margin beyond measurement error
-- `PASS_MARGINAL` - satisfied, but the margin is inside measurement error or under ~5% of the threshold. Report the margin number and tell the user to verify physically.
+- `PASS_MARGINAL` - satisfied, but the margin is inside measurement error or under ~5% of the threshold, or the deciding figure is not about this exact unit. Report the margin number and tell the user to verify physically. Full thresholds: `references/source-verification.md`.
 - `FAIL` - violated
 - `UNKNOWN` - not confirmable from an acceptable source
 
 **Filtering rule.** A candidate enters `verified_solutions` only if every hard constraint and the budget are `PASS` or `PASS_MARGINAL`. `UNKNOWN` excludes exactly as `FAIL` does. A candidate failing one or two constraints enters `near_misses` with the binding constraint named.
+
+**Accepted risks.** A hard constraint that no source can settle, and that the user has knowingly accepted as a risk (`accepted_risks`), is taken out of gating for that candidate. The candidate can then enter `verified_solutions`, but never with the all-pass badge, and its card shows the risk as not verifiable together with what is known.
 
 **Source tiers.** Rank every figure. On conflict over a gating spec, resolve before deciding and prefer the higher tier; if unresolvable, the spec is `UNKNOWN`.
 
@@ -154,6 +228,8 @@ Video figures follow the same ladder: the manufacturer's own channel is a market
 **Sanity checks.** Run cross-checks on every gating figure before trusting it: sum of parts against the whole, aspect ratios, volume against dimensions, performance against price. An implausible figure usually means transposed axes or a carton dimension, not a remarkable product.
 
 **Effective over nominal.** Gate on the effective figure from the primer's trap list, never the advertised one.
+
+**Evidence that is not about this exact unit.** A figure borrowed from a sibling model, shared chip or category default supports `PASS_MARGINAL` at most. A measurement without its conditions (distance for noise, settings for fps) cannot decide a threshold. A price that looks like a site error is `UNKNOWN` until a cart or second merchant confirms it. A conversion you invented is a judgement call, not a gate. A risk no source can settle, which the user accepts, goes to `accepted_risks`: shown, never counted as a `PASS`. Details and observed cases: `references/source-verification.md`.
 
 **Reviews and reputation.** Require model-level rating plus count from a named source. Below a usable count, fall back to brand-level evidence and say so. Absence of reviews is `UNKNOWN`, not negative - and `UNKNOWN` still excludes. Honour cross-market reputation when the user permits it.
 
@@ -171,10 +247,10 @@ Deliver a **single self-contained HTML file published as an Artifact** - inline 
 
 Required structure:
 
-1. **Masthead** - brief digest, and the headline finding rather than a greeting.
+1. **Masthead** - brief digest, the headline finding rather than a greeting, and a direct answer to each of the user's `open_questions`.
 2. **Constraint strip** - the active constraint set; on a revision, the diff.
 3. **Interactive tool for the binding constraint** - the highest-value element in the report. Let the user drag the binding threshold and watch the field re-audit live, so they can see what relaxing it buys. Build this whenever a single constraint dominates.
-4. **Verified solution cards** - one per survivor, each with a lead image, spec table, budget badge, margin on threshold constraints, merchant links, and a plain-language "why this one".
+4. **Verified solution cards** - one per survivor, each with a lead image (or a labelled to-scale drawing), spec table, budget badge, margin on threshold constraints, merchant links, and a plain-language "why this one".
 5. **Lineage panel** - per finalist, the newer or higher model checked at the same manufacturer, what it changes for this user, its price, and a verdict. Each solution card also carries a one-line lineage note.
 6. **Near-miss / override panel** - visually distinct from verified solutions, each entry naming the exact unmet constraint. Rank by how few constraints they miss.
 7. **Audit ledger** - every rejected candidate and its binding reason, user-facing. This proves coverage and lets the user overrule you. Not an internal log.
@@ -182,6 +258,8 @@ Required structure:
 9. **Category usage guidance** - the practical technique notes from the primer.
 10. **Confidence disclosure** - an explicit list of what could not be verified and what was tried.
 11. **Footer** - price timestamp, source notes, image attribution.
+
+**Check before every publish**, revisions included, with the checklist in `references/report-template.md`. A step that could not run is disclosed, never ticked.
 
 Alongside the artifact, give a short executive summary in chat: the headline finding, the ranked recommendation, and any judgement call you made on the user's behalf.
 
@@ -197,14 +275,14 @@ When a constraint is added, removed, or modified:
 4. Emit an explicit **constraint diff and impact statement**: what changed, which previously-verified items now fail and on which rule, which previously-failed items are promoted. Never let a silent re-ranking happen.
 5. Relaxing or removing a constraint re-audits previously failed candidates and promotes those that now pass. Never discard failed candidates; the pool is cumulative.
 6. Only if `verified_solutions` is below 3 after tightening, run targeted delta searches for the newly binding criteria alone.
-7. Republish the report **to the same artifact URL** so the user keeps one link. Change title and favicon only on a hard pivot in what the report is about.
+7. Republish a **revision** of the same brief **to the same artifact URL** so the user keeps one link. Publish an **alternative direction** (another style, another way to buy, another product class) as a **new artifact** and leave the earlier one intact, so the user can compare. When unsure which it is, ask in one line. See `references/report-template.md`.
 
 ## 11. OPERATIONAL MANDATES
 
 - **Zero hallucination.** Every spec, price, and availability claim traces to a tool call against an acceptable source. Model recall is not a source. A search snippet is not a source.
 - **Strict verification.** No product reaches `verified_solutions` with an unverified gating spec. `UNKNOWN` excludes.
 - **Check the family before recommending.** No finalist is presented without its lineage check. Say plainly when the newer model is not worth the difference, and why.
-- **Never hide an interesting exclusion.** A candidate that beats the field but fails one constraint belongs in the near-miss panel with its binding reason stated, not in silence. The user may overrule a constraint; they cannot overrule what you concealed.
+- **Never hide an interesting exclusion.** A candidate that beats the field but fails one or two constraints belongs in the near-miss panel with its binding reason stated, not in silence. The user may overrule a constraint; they cannot overrule what you concealed.
 - **Report the binding constraint, always.** When few or no candidates survive, the deliverable is the binding-constraint analysis with a quantified relaxation payoff.
 - **Distinguish the user's guesses from their requirements.** Re-derive estimates rather than gating on them.
 - **Surface judgement calls.** When you set, derive, or reinterpret a constraint on the user's behalf, say so plainly and give them the means to reverse it.
