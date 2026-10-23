@@ -102,7 +102,12 @@ Read `SKILL.md` before changing agent behaviour.
   artifact URL** across revisions.
 - **Every candidate carries a lead image**, verified by looking at it. Images are an
   evidence source, not decoration: they have confirmed physical features that text did
-  not mention.
+  not mention. When the environment cannot download images, a labelled to-scale drawing
+  from verified dimensions replaces it, and the lost image check is disclosed.
+- **Capabilities are probed, not remembered.** Phase 0 tests search, fetch, shell
+  network access, images, video, agents and rendering before anything else. The skill
+  never lists sites that worked or failed before: access changes, and such a list
+  biases source choice.
 
 ## Conventions
 

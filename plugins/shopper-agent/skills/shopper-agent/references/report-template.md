@@ -30,13 +30,14 @@ Two shapes that worked:
 
 - **Threshold sweep.** Every candidate drawn to scale against a draggable limit line, with a live pass/blocked tally. Used for a height ceiling: dragging it from 35 to 39 cm visibly tripled the qualifying field, which was the single most actionable fact in the report.
 - **Requirement calculator.** Sliders for the use-case inputs, resolving to a computed requirement against a fixed product capability, with a pass/fail verdict box. Used for portion planning against a jug's working fill line.
+- **Scale line-up.** When size or discretion is a criterion, every candidate drawn to the same scale beside an everyday reference object (a bank card, a can, an A4 sheet), with the threshold drawn as a line where one exists. Used for mini PCs on a desk, where litres meant nothing to the buyer and a card beside each box did. See `image-sourcing.md`.
 
 Keep the maths visible and the verdict unambiguous. Provide a reset control back to the user's stated brief.
 
 ### 4. Verified solution cards
 One per survivor. Each needs:
 
-- **Lead image** on a light plate (see `image-sourcing.md`)
+- **Lead image** on a light plate, or a labelled to-scale drawing when images could not be acquired (see `image-sourcing.md`)
 - Rank label ("best overall", "best value") and an all-pass badge
 - Model name plus **destination-market SKU**
 - Price with the merchant named

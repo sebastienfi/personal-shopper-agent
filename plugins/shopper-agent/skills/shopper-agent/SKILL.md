@@ -20,10 +20,11 @@ Run these phases in order. Do not skip ahead; each gates the next.
 
 | Phase | Name | Gate to pass |
 |---|---|---|
+| 0 | Capability probe | You know which tools work here, and the user knows what is degraded |
 | 1 | Domain primer | You can name the form factors, differentiating specs, and spec traps |
 | 2 | Requirements interview | Every constraint has a provenance tag and a quantified value |
 | 3 | Feasibility pre-check | The constraint set is known to be satisfiable, or reported as not |
-| 4 | Research & acquisition | Candidate pool with primary-source specs and a lead image each |
+| 4 | Research & acquisition | Candidate pool with primary-source specs and a lead image (or a to-scale drawing) each |
 | 5 | Verification & audit | Every candidate scored PASS / PASS_MARGINAL / FAIL / UNKNOWN per constraint; every finalist lineage-checked |
 | 6 | Presentation | Interactive HTML report published |
 | 7 | Iterative refinement | Constraint diff reported, pool re-audited, report updated in place |
@@ -33,10 +34,35 @@ On any later user turn, classify intent and re-enter at the correct phase:
 
 A change of product category re-enters at Phase 1. A change of constraint re-enters at Phase 7.
 
+### Phase 0 - capability probe
+
+The tools available differ between environments and change over time: shell network access, image downloads, YouTube, parallel agents, a headless browser. Probe them once, before Phase 1, instead of discovering a gap halfway through research.
+
+Probe the path you are actually about to use, with one cheap call each:
+
+- **Web search and fetch** - one search and one fetch of a page in the category.
+- **Shell network access** - one `curl` to a manufacturer page in the category. This is the path the image ladder depends on.
+- **Image acquisition** - download one product image and check what arrived (`file`, `wc -c`).
+- **Video** - `yt-dlp --version`, then one flat search.
+- **Parallel agents** - whether a tool to launch research agents exists.
+- **Rendering** - whether a headless browser can open and screenshot a local HTML file, for the Phase 6 check.
+
+Record the results in `capabilities`. **Do not keep or consult a list of sites that worked or failed in earlier sessions.** Access changes, and such a list biases source choice toward whatever was reachable once. Probe; do not remember.
+
+Then:
+
+1. Tell the user in one line what will be degraded and what replaces it.
+2. Copy `capabilities` into every research-agent brief, so no agent retries a path that is known to be closed.
+3. Apply the degraded path: no images means a to-scale drawing (`references/image-sourcing.md`); no video means the video pass is skipped and disclosed; no parallel agents means the same brief run sequentially; no rendering means the Phase 6 check says so rather than being marked done.
+4. A missing capability never becomes an assumed value. Specs that only that tool could have confirmed go to `unverified`.
+
+Re-probe a capability only when a later call suggests it has changed.
+
 ## 3. STATE MANAGEMENT
 
 Maintain across turns:
 
+- `capabilities`: what the Phase 0 probe found: search, fetch, shell network access, image download, video, parallel agents, rendering
 - `intent`: current classified intent
 - `target_product`: product category or query
 - `domain_primer`: output of Phase 1 (form factors, differentiators, traps, price bands, failure modes)
@@ -122,11 +148,15 @@ If `OVER_DETERMINED`, **stop and report before spending the research budget.** N
 5. The manual or spec-sheet PDF
 6. An alternate-locale page for the same SKU
 
+Skip the rungs that `capabilities` says are closed in this environment (for example `curl` and the CDN when the shell has no network access).
+
 **A failed fetch never becomes an assumed value.** It becomes an entry in `unverified`.
 
 **Video pass.** For each finalist, and each near-miss whose binding constraint is still `UNKNOWN`, run a text-only YouTube pass: captions, description, comments, metadata. Video carries what spec pages omit - real setup time, noise, fit, washability, packed size, owner complaints. See `references/video-evidence.md`.
 
-**Lead image.** Acquire one per candidate. See `references/image-sourcing.md`. Images are also *evidence*: acquire them before the audit, because they frequently confirm or refute a claimed physical feature.
+**Lead image.** Acquire one per candidate. See `references/image-sourcing.md`. Images are also *evidence*: acquire them before the audit, because they frequently confirm or refute a claimed physical feature. When `capabilities` says images cannot be downloaded, draw each candidate to scale from its verified dimensions instead, labelled as a drawing, and disclose that the image check did not run.
+
+**Size against something familiar.** When size, fit or discretion is one of the user's criteria, show the candidates to scale beside an everyday object of standard size, even when photos exist. A photo shows what a product looks like; it does not show how big it is. See `references/image-sourcing.md`.
 
 **Research budget and stopping rule.** Track rounds. After 3 consecutive rounds yielding no new PASS candidate, stop searching and deliver what you have plus the binding-constraint analysis. Exhaustive search is not the deliverable; a decision is.
 
