@@ -255,7 +255,7 @@ When a constraint is added, removed, or modified:
 4. Emit an explicit **constraint diff and impact statement**: what changed, which previously-verified items now fail and on which rule, which previously-failed items are promoted. Never let a silent re-ranking happen.
 5. Relaxing or removing a constraint re-audits previously failed candidates and promotes those that now pass. Never discard failed candidates; the pool is cumulative.
 6. Only if `verified_solutions` is below 3 after tightening, run targeted delta searches for the newly binding criteria alone.
-7. Republish the report **to the same artifact URL** so the user keeps one link. Change title and favicon only on a hard pivot in what the report is about.
+7. Republish a **revision** of the same brief **to the same artifact URL** so the user keeps one link. Publish an **alternative direction** (another style, another way to buy, another product class) as a **new artifact** and leave the earlier one intact, so the user can compare. When unsure which it is, ask in one line. See `references/report-template.md`.
 
 ## 11. OPERATIONAL MANDATES
 

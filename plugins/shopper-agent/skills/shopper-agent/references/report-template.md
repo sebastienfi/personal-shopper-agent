@@ -101,11 +101,15 @@ Run every step below before each publish, revisions included. In four sessions t
 
 **A step that could not run is reported, never ticked.** When no headless browser is available (see `capabilities`), the confidence disclosure says the rendering was not checked, and the chat summary says so too.
 
-## Update in place
+## Revision or alternative
 
-Republish to the **same artifact URL** on every revision, by passing the same file path in-session or the `url` parameter otherwise. The user keeps one link across the whole conversation.
+Decide which of two things a change is before publishing.
 
-Change the `<title>` and favicon only on a hard pivot in what the report is about. A constraint being removed such that the entire product class changes is a hard pivot; adding a candidate is not.
+**A revision of the same brief** - a constraint added, relaxed or tightened, a candidate added, a price refreshed. Republish to the **same artifact URL**, by passing the same file path in-session or the `url` parameter otherwise. The user keeps one link, and the constraint strip shows the diff.
+
+**An alternative direction** - another style, another way to buy (lease against credit), another product class, or any change after which the user may want to compare with what came before. Publish a **new artifact**, with a title that names the direction, and leave the earlier one untouched. Link the reports to each other in their footers. In the wardrobe session the user asked for exactly this ("create new artifacts so we can keep the previous ideas") after a revision had already overwritten the first style. When in doubt, ask in one line which the user wants.
+
+Change the `<title>` and favicon of a revised artifact only on a hard pivot in what the report is about. A constraint being removed such that the entire product class changes is a hard pivot; adding a candidate is not.
 
 ## Accompanying chat summary
 

@@ -101,7 +101,8 @@ Read `SKILL.md` before changing agent behaviour.
   them; the pool is cumulative.
 - **Output is a single self-contained HTML artifact** (inline CSS/JS, images as
   `data:` URIs, no external assets except Google Fonts), republished to the **same
-  artifact URL** across revisions.
+  artifact URL** across revisions of the same brief. An alternative direction (another
+  style, another way to buy) is a new artifact, and the earlier one is kept.
 - **Every candidate carries a lead image**, verified by looking at it. Images are an
   evidence source, not decoration: they have confirmed physical features that text did
   not mention. When the environment cannot download images, a labelled to-scale drawing
