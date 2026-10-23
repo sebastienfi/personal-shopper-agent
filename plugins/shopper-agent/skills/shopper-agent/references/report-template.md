@@ -18,6 +18,8 @@ Load the `artifact-design` skill before writing. Publish with the `Artifact` too
 ### 1. Masthead
 Lead with the **headline finding**, not a greeting. If one constraint dominated the search, say so here. Include a compact digest of the brief: constraint values, budget, destination, and a verified-versus-audited count.
 
+When `open_questions` is not empty, answer each one here, directly, with its evidence and its limits. A question the user asked is part of the deliverable, not context for a filter. Example: a per-device table saying whether the USB-C dongle or Bluetooth is the more reliable link, and why.
+
 ### 2. Constraint strip
 The active constraint set as a compact row. On a revision, render it as a **diff** with removed / modified / added tags.
 

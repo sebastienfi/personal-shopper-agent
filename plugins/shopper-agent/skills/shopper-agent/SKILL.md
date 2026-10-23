@@ -22,7 +22,7 @@ Run these phases in order. Do not skip ahead; each gates the next.
 |---|---|---|
 | 0 | Capability probe | You know which tools work here, and the user knows what is degraded |
 | 1 | Domain primer | You can name the form factors, differentiating specs, and spec traps |
-| 2 | Requirements interview | Every constraint has a provenance tag and a quantified value |
+| 2 | Requirements interview | Every constraint has a provenance tag and a quantified value, and the user has seen the brief |
 | 3 | Feasibility pre-check | The verdict and its binding constraint have been told to the user, before research starts |
 | 4 | Research & acquisition | Candidate pool with primary-source specs and a lead image (or a to-scale drawing) each |
 | 5 | Verification & audit | Every candidate scored PASS / PASS_MARGINAL / FAIL / UNKNOWN per constraint; every finalist lineage-checked |
@@ -78,6 +78,7 @@ Maintain across turns:
 - `verified_solutions`: candidates whose every hard constraint is PASS
 - `near_misses`: candidates failing exactly one or two constraints, with the binding one named
 - `lineage`: per finalist and near-miss, the successor, step-up and cheaper siblings checked at the same manufacturer, their deltas on the gating specs, price delta, and verdict
+- `open_questions`: comparative or explanatory questions the user asked, to be answered in the report
 - `unverified`: specs that could not be confirmed, and what was tried
 - `research_budget`: rounds spent, rounds without a new PASS candidate
 
@@ -120,7 +121,21 @@ Ask about people, frequency, context, and portion or workload. Then compute the 
 
 **Resolve budget scope explicitly.** Ask whether the ceiling is landed cost or sticker price, and model the components: product, shipping, import VAT, duty, local eco-tax or recycling levy. Never compare a domestic sticker price against an imported landed cost.
 
-**Question form.** Batch at most 3-4 questions in one pass. Offer concrete options with their consequences, mark a recommended default, and never ask what the primer or a search can answer. Ask only questions whose answers change what you do next.
+**Use what is already known.** Before asking, read the conversation and any memory or profile the environment provides: devices owned, measurements, location, brands already bought. Ask only to confirm or to fill a gap. In one session the exact phone, laptop and TV models were already on record and were asked for only after research had started.
+
+**Ask about taste before specs when taste decides.** For anything worn, displayed or furnished, ask early about the cut, silhouette or look the user likes, what they refuse, and the brands they already buy and why (fit, width, sizing). In one wardrobe session "nothing close to the body" and "only Adidas and New Balance, for my wide feet" surfaced after two complete reports had been built on the wrong silhouette.
+
+**Name the exact things it must work with.** When the product connects to, fits into or pairs with something the user owns, ask for the models (phone, laptop, TV, car, shelf), not the category. Compatibility is decided per model.
+
+**Ask the facts that change the price for this buyer.** When the price depends on who buys - incentive eligibility (income bracket, status), a trade-in, existing contracts, how much down payment they accept - ask before searching. In a car session every advertised lease assumed the lowest-income bonus, and the household's bracket, trade-in and deposit tolerance were never asked.
+
+**Safety facts are hard constraints.** When the primer flags a risk (an allergen, use in heat or water, children, a medical device), ask the one question that decides it, and turn the answer into a `derived` hard constraint. A beard-dye session asked about past reactions to dye or black henna and excluded the main allergen on a yes.
+
+**Keep the user's questions as questions.** When the user asks something comparative or explanatory ("which is more reliable, the USB-C dongle or Bluetooth, for each of my devices?"), record it in `open_questions` and answer it in the report, with evidence. Do not quietly turn it into a filter. In one session that substitution was noticed by the user only after four research agents were running, and each had to be amended.
+
+**Confirm the brief before an expensive fan-out.** Before Phase 4 launches several research agents or a large search budget, send one compact brief: the constraints with their provenance tags, the questions the report will answer, and the defaults you chose for the user. Send it with the Phase 3 verdict when you can. A correction before launch costs one message; after launch it costs an amendment per agent. If the user is not there to answer, proceed and say which reading you took.
+
+**Question form.** Batch at most 3-4 questions in one pass, choosing the ones above that change your next step. Offer concrete options with their consequences, mark a recommended default, and never ask what the primer or a search can answer. Ask only questions whose answers change what you do next.
 
 ## 6. PHASE 3 - FEASIBILITY PRE-CHECK
 
@@ -207,7 +222,7 @@ Deliver a **single self-contained HTML file published as an Artifact** - inline 
 
 Required structure:
 
-1. **Masthead** - brief digest, and the headline finding rather than a greeting.
+1. **Masthead** - brief digest, the headline finding rather than a greeting, and a direct answer to each of the user's `open_questions`.
 2. **Constraint strip** - the active constraint set; on a revision, the diff.
 3. **Interactive tool for the binding constraint** - the highest-value element in the report. Let the user drag the binding threshold and watch the field re-audit live, so they can see what relaxing it buys. Build this whenever a single constraint dominates.
 4. **Verified solution cards** - one per survivor, each with a lead image, spec table, budget badge, margin on threshold constraints, merchant links, and a plain-language "why this one".
