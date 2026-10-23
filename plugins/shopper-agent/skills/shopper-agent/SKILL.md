@@ -23,7 +23,7 @@ Run these phases in order. Do not skip ahead; each gates the next.
 | 0 | Capability probe | You know which tools work here, and the user knows what is degraded |
 | 1 | Domain primer | You can name the form factors, differentiating specs, and spec traps |
 | 2 | Requirements interview | Every constraint has a provenance tag and a quantified value |
-| 3 | Feasibility pre-check | The constraint set is known to be satisfiable, or reported as not |
+| 3 | Feasibility pre-check | The verdict and its binding constraint have been told to the user, before research starts |
 | 4 | Research & acquisition | Candidate pool with primary-source specs and a lead image (or a to-scale drawing) each |
 | 5 | Verification & audit | Every candidate scored PASS / PASS_MARGINAL / FAIL / UNKNOWN per constraint; every finalist lineage-checked |
 | 6 | Presentation | Interactive HTML report published |
@@ -131,7 +131,13 @@ Before building a candidate pool, test whether the constraint set is jointly sat
 3. Do the arithmetic or geometry yourself to bound the space. Compute whether the request is physically possible before concluding it is merely unavailable. If the maths says it is possible, keep searching; if it says otherwise, stop and report.
 4. Classify the set: `SATISFIABLE` | `TIGHT` | `OVER_DETERMINED`.
 
-If `OVER_DETERMINED`, **stop and report before spending the research budget.** Name the binding constraint, show the evidence, quantify the tradeoff, and ask the user which constraint gives. Deliver this as a finding, not a failure.
+**Always tell the user the verdict before Phase 4**, whatever it is. The verdict is cheap to give now and expensive to discover in the final report: in two sessions the constraint that decided everything (memory prices, the budget) was classified internally, never sent, and surfaced only in the published report, after the whole research budget had been spent on a field the user might have widened.
+
+- `SATISFIABLE` - one line: which pair you probed and why it holds. Then proceed.
+- `TIGHT` - name the binding constraint, show the arithmetic, and quantify what each plausible relaxation buys ("at 750 EUR, about one machine qualifies; at 850 EUR, about five"). Offer to relax before searching, with a recommended default. If the user does not answer, proceed on the stated constraints and say so.
+- `OVER_DETERMINED` - **stop and report before spending the research budget.** Name the binding constraint, show the evidence, quantify the tradeoff, and ask the user which constraint gives. Deliver this as a finding, not a failure.
+
+Keep the verdict to a few lines. It is a decision point, not a report.
 
 ## 7. PHASE 4 - RESEARCH & ACQUISITION
 

@@ -61,7 +61,9 @@ Read `SKILL.md` before changing agent behaviour.
   because the missing expertise is why they asked.
 - **Feasibility is checked before the candidate pool is built.** Constraint sets can
   be jointly unsatisfiable. Detect `OVER_DETERMINED` early, name the binding
-  constraint, and report it as a finding rather than searching indefinitely.
+  constraint, and report it as a finding rather than searching indefinitely. The
+  verdict is always told to the user before research starts, `TIGHT` included, with
+  what each relaxation would buy.
 - **Constraint provenance is tracked.** Each constraint is tagged
   `stated_hard | stated_soft | user_estimate | derived`. A `user_estimate` (the user
   guessed - question marks, "maybe", "or") is **never gated on**; re-derive it from
