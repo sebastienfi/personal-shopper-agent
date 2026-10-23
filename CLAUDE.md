@@ -28,8 +28,10 @@ plugins/shopper-agent/skills/shopper-agent/
     ├── source-verification.md        # source tiers, conflict resolution, margins
     ├── video-evidence.md             # YouTube as a source: captions, comments, tiering
     ├── lineage-check.md              # successor, step-up and sibling check before recommending
-    ├── image-sourcing.md             # lead images: acquisition, CSP, verification
-    └── report-template.md            # HTML report anatomy and interaction patterns
+    ├── image-sourcing.md             # lead images, scale drawings, everyday-object comparisons
+    ├── research-fanout.md            # parallel research agents: brief, search cap, output schema
+    ├── purchase-profiles.md          # verdict on one product, kits, financed offers, used listings
+    └── report-template.md            # HTML report anatomy, interactions, pre-publish check
 ```
 
 There is deliberately **no `.claude/skills/` copy or symlink in this repo**. It would load
@@ -46,8 +48,8 @@ That shadows any installed copy of the same plugin (verified: with both present,
 working tree wins and only one entry loads), so a plain `claude` still gets the released
 snapshot from `~/.claude/plugins/cache/`.
 
-`SKILL.md` is invoked via `/shopper-agent` and holds the authoritative 7-phase
-sequence. The reference files hold the detailed playbooks and are read on demand
+`SKILL.md` is invoked via `/shopper-agent` and holds the authoritative sequence: a
+capability probe (Phase 0), then seven phases. The reference files hold the detailed playbooks and are read on demand
 (progressive disclosure) - `SKILL.md` points to each at the relevant phase.
 
 Read `SKILL.md` before changing agent behaviour.

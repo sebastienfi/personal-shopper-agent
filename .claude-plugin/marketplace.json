@@ -10,7 +10,7 @@
     {
       "name": "shopper-agent",
       "source": "./plugins/shopper-agent",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "description": "Autonomous research-and-shopping agent. Studies the product category first, interviews you with informed questions, verifies every spec against primary sources, and renders survivors as an interactive HTML shopping report.",
       "author": {
         "name": "Sébastien Fichot",
