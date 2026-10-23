@@ -29,7 +29,7 @@ The active constraint set as a compact row. On a revision, render it as a **diff
 
 The pattern: let the user drag the binding threshold and watch the entire field re-audit live. This converts "here is what qualifies" into "here is what your constraint costs you", which is the question they actually have.
 
-Two shapes that worked:
+Shapes that worked:
 
 - **Threshold sweep.** Every candidate drawn to scale against a draggable limit line, with a live pass/blocked tally. Used for a height ceiling: dragging it from 35 to 39 cm visibly tripled the qualifying field, which was the single most actionable fact in the report.
 - **Requirement calculator.** Sliders for the use-case inputs, resolving to a computed requirement against a fixed product capability, with a pass/fail verdict box. Used for portion planning against a jug's working fill line.
@@ -41,7 +41,7 @@ Keep the maths visible and the verdict unambiguous. Provide a reset control back
 One per survivor. Each needs:
 
 - **Lead image** on a light plate, or a labelled to-scale drawing when images could not be acquired (see `image-sourcing.md`)
-- Rank label ("best overall", "best value") and an all-pass badge. Show it only when every hard constraint is `PASS`; a card carrying a `PASS_MARGINAL` or a borrowed figure says what remains to verify instead ("passes, noise to confirm"). One session labelled a card "all conditions met" while its idle noise had been measured on a sibling CPU.
+- Rank label ("best overall", "best value") and an all-pass badge. Show it only when every hard constraint is `PASS`; a card carrying a `PASS_MARGINAL`, a borrowed figure or an accepted risk says what remains to verify instead ("passes, noise to confirm"). One session labelled a card "all conditions met" while its idle noise had been measured on a sibling CPU.
 - Model name plus **destination-market SKU**
 - Price with the merchant named
 - Spec table with the gating specs, marking margin on threshold constraints and colouring good / marginal values
@@ -110,7 +110,7 @@ Decide which of two things a change is before publishing.
 
 **An alternative direction** - another style, another way to buy (lease against credit), another product class, or any change after which the user may want to compare with what came before. Publish a **new artifact**, with a title that names the direction, and leave the earlier one untouched. Link the reports to each other in their footers. In the wardrobe session the user asked for exactly this ("create new artifacts so we can keep the previous ideas") after a revision had already overwritten the first style. When in doubt, ask in one line which the user wants.
 
-Change the `<title>` and favicon of a revised artifact only on a hard pivot in what the report is about. A constraint being removed such that the entire product class changes is a hard pivot; adding a candidate is not.
+Change the `<title>` and favicon of a revised artifact only when its headline subject changes; adding a candidate does not. A change of product class is never a revision: it is an alternative direction and gets its own artifact.
 
 ## Accompanying chat summary
 

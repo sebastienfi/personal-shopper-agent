@@ -124,4 +124,6 @@ Choose a reference whose size is standardised and close to the product's own siz
 | Larger items, documents | A4 sheet | 210 x 297 mm |
 | Furniture, clothing, vehicles | The user's own height, when they gave it | as stated |
 
+For clothing, draw a plain outline from the garment's measured dimensions (length, chest or waist width), not a styled garment.
+
 Where a threshold constraint exists, draw it as a line in the same view (a shelf height, a box). That turns this view into the threshold sweep described in `report-template.md`.

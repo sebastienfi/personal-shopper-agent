@@ -16,7 +16,7 @@ A request can combine profiles (the car session went from lease offers to used c
 
 The user wants an answer about *this* product. In the beard-dye session the verdict was given, but under a full primer and followed by four interview questions, and the user did not reply. Answer the question first.
 
-1. **Fetch the page before anything else**, with a prompt that asks explicitly for the composition or model number, the legal entity and address, the delivery terms, the price history shown, and the negative reviews. Run the merchant-trust checklist in `source-verification.md`.
+1. **Fetch the page first.** This fetch doubles as the Phase 0 fetch probe; run the rest of the probe only if the user takes up the full search. Use a prompt that asks explicitly for the composition or model number, the legal entity and address, the delivery terms, the price history shown, and the negative reviews. Run the merchant-trust checklist in `source-verification.md`.
 2. **Run a short primer**, only what is needed to judge it: the category's sub-types, which one this product is, and the trap that matters for it.
 3. **Reply verdict first**: a one-line verdict, the two to four reasons with their sources, and the claim-against-reality gap if there is one ("lasts six weeks" is true of the dyed hair, while regrowth shows in one to three weeks).
 4. **Then offer the full search**, with at most two questions and a default the user can accept in one word. If the product fails, name one or two established alternatives as leads, labelled as not yet audited.
@@ -40,7 +40,7 @@ Several items bought together for one purpose: a work wardrobe, a desk setup. Ea
 
 - Map each measurement to each brand's own size chart.
 - When the chart and a size the user already wears in that brand disagree, the size they wear wins.
-- A chart on the brand's site is tier 1. A reseller's chart is tier 4: mark the item "size to confirm".
+- A chart on the brand's site is tier 1. A reseller's chart is tier 4, so fit is `UNKNOWN`: the item goes to the near-miss panel marked "size to confirm", unless the user accepts the fit risk (`accepted_risks`), for example when free returns or a try-on in store make a wrong size cheap.
 - A chart published only as an image is `UNKNOWN` unless you can read it.
 
 **Report.**
@@ -87,7 +87,7 @@ A lease (LOA, LLD), a subscription, or a purchase on credit: the price is a sche
 - A calculator: deposit, monthly ceiling, duration, rate, and incentive toggles. It re-audits leases, new cars on credit and used cars live.
 - Each offer card carries its end date.
 
-**Lineage** applies to the model generation, not to the offer. Images are optional.
+**Lineage** applies to the model generation, not to the offer. One image of the model serves all its offers.
 
 ## Used listing
 
@@ -103,7 +103,7 @@ Each listing is one unit with its own history. The model's spec sheet still appl
 
 - "Declared" or "estimated" condition is the seller's claim, tier 5.
 - A certificate or a measured report is tier 1 for that unit. For an electric car, that means a battery health certificate.
-- Without one, condition is `UNKNOWN` for the audit, and the card says what to ask for.
+- Without one, condition is `UNKNOWN`: the listing goes to the near-miss panel, which says what to ask the seller for.
 
 **Freshness.**
 

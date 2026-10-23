@@ -34,7 +34,7 @@ The brief contains:
 
 Web search quotas can be shared by every agent launched in the same turn. Two sessions hit a shared ceiling of about 200 searches, and agents stopped mid-work. The figure was observed, not documented, and may differ elsewhere.
 
-Give every agent an explicit cap that leaves room for the gap-closing pass: roughly the shared ceiling, minus a reserve of about a quarter for yourself, divided by the number of agents. With four agents that was about 35 to 45 each, and they finished with room to spare.
+Give every agent an explicit cap that leaves room for the gap-closing pass: roughly the shared ceiling, minus a reserve of about a quarter for yourself, divided by the number of agents. With four agents that is about 35 to 40 each; in practice they used less.
 
 ## Output schema
 
@@ -57,4 +57,4 @@ Keep **user-facing text separate from codes**: a `binding_reason` field written 
 
 ## After the agents
 
-Run a **gap-closing pass** yourself on the finalists and near-misses: targeted fetches for every `UNKNOWN` that could change a verdict. Then the lineage check (`lineage-check.md`), then the audit.
+Run a **gap-closing pass** yourself on the finalists and near-misses: targeted fetches for every `UNKNOWN` that could change a verdict. Then the audit (Phase 5), then the lineage check on finalists and near-misses (`lineage-check.md`).
